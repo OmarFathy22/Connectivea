@@ -15,13 +15,6 @@ import getDesignTokens from "../styles/MyTheme";
 import MainContent from "../components/MainContent";
 import DRAWER from "../components/DRAWER";
 import RightDrawer from "../components/RightDrawer";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase/config";
-import { useEffect } from "react";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../firebase/config";
-import jwtDecode from "jwt-decode";
-import VideoBackground from "../components/VideoBackground";
 const Root = (props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
@@ -42,11 +35,11 @@ const Root = (props) => {
       <CssBaseline />
       <Box>
         {/* Appbar is landing here */}
-        <Appbar
+        {/* <Appbar
           showList={showList}
           setshowList={setshowList}
           handleDrawerToggle={handleDrawerToggle}
-        />
+        /> */}
         <Stack direction="row">
           <DRAWER
             mobileOpen={mobileOpen}

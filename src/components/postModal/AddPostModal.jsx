@@ -11,11 +11,6 @@ import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
-// import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-// import dayjs from "dayjs";
 import PostButton from "./PostButton";
 import { db, storage } from "../../../firebase/config";
 import { useEffect, useState } from "react";
@@ -161,8 +156,10 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
     <Box sx={{ boxShadow: "none" }}>
       <Tooltip title="Add Post" placement="left">
         <Fab
+          id="FabIconClick"
           onClick={handleOpen}
           sx={{
+            display: 'none',
             position: "fixed",
             bottom: "30px",
             left: { xs: "30px" },

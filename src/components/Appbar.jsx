@@ -17,10 +17,11 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Button, Divider } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { updateCurrentUser } from "firebase/auth";
+import SearchResults from "./postModal/SearchResults";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -50,6 +51,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
+  width:"100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -65,13 +67,24 @@ export default function PrimarySearchAppBar({
   showList,
   setshowList,
   handleDrawerToggle,
+  theme
 }) {
+  const [filterAccounts , setfilterAccounts] = React.useState('')
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [OpenSearchMenu, setOpenSearchMenu] = React.useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const handleSearch = (e) => {
+    setfilterAccounts(e.target.value)
+  }
+  const handleFocus = (e) =>{
+    setOpenSearchMenu(true)
+  }
+  const handleBlur = event => {
+    setOpenSearchMenu(false)
+  };
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event);
   };
@@ -157,11 +170,13 @@ export default function PrimarySearchAppBar({
   return (
     <Box>
       <AppBar
+        
         position="fixed"
         sx={{
-          // width: { sm: `calc(100% - 240px)` },
+          width: { sm: `calc(100% - 240px)` },
           // ml: { sm: `240px` },
-          zIndex: "1300",
+          backgroundColor: "#185de5",
+          zIndex:"1300px"
         }}
       >
         <Toolbar>
@@ -174,34 +189,24 @@ export default function PrimarySearchAppBar({
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "block" }, overflow: "initial", mr: "20px" }}
-          >
-            POSTATI
-          </Typography>
-          <IconButton
-            onClick={() => {
-              localStorage.setItem("user", JSON.stringify({}));
-              window.location.reload();
-            }}
-            variant="contained"
-            sx={{ margin: "10px" }}
-          >
-            <LogoutIcon/>
-          </IconButton>
+          
 
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+
+        <Box sx={{display:"flex" , flexDirection:"column" , position:"relative" , width:"600px"}}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+                onChange={handleSearch}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+              />
+            {OpenSearchMenu && <SearchResults Search={filterAccounts} theme={theme}/>}
+            </Search>
+        </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box
             sx={{
@@ -278,9 +283,11 @@ export default function PrimarySearchAppBar({
             </IconButton>
           </Box>
         </Toolbar>
+        <Divider/>
       </AppBar>
       {renderMobileMenu}
       {/* {renderMenu} */}
+      
     </Box>
   );
 }

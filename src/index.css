@@ -31,10 +31,10 @@ html {
   }
 
 }
-.css-96uuyl 
+/* .css-96uuyl 
 {
-  width: 500px !important;
-}
+  max-width: 1500px !important;
+} */
 .css-1h9uykw-MuiInputBase-input-MuiOutlinedInput-input
 {
   height: 0.5em !important;
@@ -45,4 +45,10 @@ html {
 
 .display-none {
   display: none;
+}
+
+@media  (min-width:600px) {
+  .Post{
+    padding-left: 240px;
+  }
 }

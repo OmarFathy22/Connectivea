@@ -6,11 +6,10 @@ import getDesignTokens from "./styles/MyTheme";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useEffect } from "react";
-
+import Appbar from './components/Appbar'
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import VideoBackground from "./components/VideoBackground";
-
 const Root = (props) => {
   const [user, setuser] = useState(
     JSON.parse(localStorage.getItem("user")) || {}
@@ -45,6 +44,11 @@ const Root = (props) => {
     setuser(UserObject);
   };
 
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  const [showList, setshowList] = useState("none");
   const [mode, setmyMode] = useState(
     localStorage.getItem("currentMode") === null
       ? "dark"
@@ -52,7 +56,6 @@ const Root = (props) => {
       ? "light"
       : "dark"
   );
-
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   return (
@@ -65,11 +68,13 @@ const Root = (props) => {
       )}
       {Object.keys(user).length !== 0 && (
         <Box>
-          {/* <Appbar
+          <Appbar
           showList={showList}
           setshowList={setshowList}
           handleDrawerToggle={handleDrawerToggle}
-        /> */}
+          theme={theme}
+        />
+        
           <Outlet />
         </Box>
       )}

@@ -9,15 +9,14 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Logo from '../me.jpg'
 import HomeIcon from "@mui/icons-material/Home";
 import Create from "@mui/icons-material/Create";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
-import SettingsIcon from "@mui/icons-material/Settings";
-import ArticleIcon from "@mui/icons-material/Article";
-import GroupIcon from "@mui/icons-material/Group";
-import StorefrontIcon from "@mui/icons-material/Storefront";
-import { styled, Switch } from "@mui/material";
+import { Divider, styled, Switch } from "@mui/material";
+import { useLocation, useNavigate } from "react-router";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -74,30 +73,69 @@ function ResponsiveDrawer({
   handleDrawerToggle,
   mobileOpen,
 }) {
-  const { window } = props;
+  const navigate = useNavigate();
+  // const location = useLocation();
+  const { sub } = JSON.parse(localStorage.getItem("user"));
+  const { Window } = props;
   const list = [
-    { text: "Home", icon: <HomeIcon /> },
-    { text: "Create", icon: <Create /> },
+    { text: "/", icon: <HomeIcon /> },
     { text: "Profile", icon: <PersonIcon /> },
-    { text: "Setting", icon: <SettingsIcon /> },
+    { text: "Create", icon: <Create /> },
     { text: "Logout", icon: <LogoutIcon />, path: "/logout" },
-    { text: "Pages", icon: <ArticleIcon />, path: "/logout" },
-    { text: "Groups", icon: <GroupIcon />, path: "/logout" },
-    { text: "Market Place", icon: <StorefrontIcon />, path: "/logout" },
   ];
-
   const drawer = (
     <div>
-      <Toolbar />
+      <Toolbar >
+          <Box sx={{display:"flex", justifyContent:"center",gap:"30px" ,  alignItems:"center"}}>
+            <img src={Logo} alt="O" width={"50px"} height={"50px"} style={{borderRadius:"50%"}} />
+            <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ display: { xs: "block" }, overflow: "initial", mr: "20px" ,textAlign:"center" }}
+          >
+            POSTATI
+          </Typography>
+          </Box>
+          </Toolbar>
+          <Divider/>
       <List>
         {list.map((item, index) => {
           return (
-            <ListItemButton key={index} sx={{ padding: "2px", width: "100%" }}>
-              <ListItem>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItem>
-            </ListItemButton>
+          <label htmlFor ={item.text === 'Create' ? "FabIconClick": ""} key={index}>
+              <ListItemButton
+                onClick={() => {
+                  if (item.text === "Profile") {
+                    navigate(`/profile/${sub}`);
+                  } else if (item.text === "/") {
+                    navigate("/");
+                  } else if (item.text === "Logout") {
+                    localStorage.setItem("user", JSON.stringify({}));
+                    window.location.reload();
+                  }
+                }}
+                key={index}
+                sx={{
+                  padding: "2px",
+                  backgroundColor:
+                    location.pathname == item.text ||
+                    location.pathname.startsWith(
+                      `/${item.text.toLocaleLowerCase()}`
+                    )
+                      ? "rgb(98 94 94 / 30%)"
+                      : "null",
+                  margin: "20px 0",
+                  width: "100%",
+                }}
+              >
+                <ListItem>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText
+                    primary={item.text === "/" ? "Home" : item.text}
+                  />
+                </ListItem>
+              </ListItemButton>
+          </label>
           );
         })}
         <MaterialUISwitch
@@ -117,7 +155,7 @@ function ResponsiveDrawer({
   );
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+  Window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -142,7 +180,8 @@ function ResponsiveDrawer({
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: theme.palette.mode === "light" ?  " rgb(247, 247, 247)" : null
+              backgroundColor:
+                theme.palette.mode === "light" ? " rgb(247, 247, 247)" : null,
             },
           }}
         >
@@ -155,7 +194,8 @@ function ResponsiveDrawer({
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: theme.palette.mode === "light" ?  " rgb(247, 247, 247)" : null
+              backgroundColor:
+                theme.palette.mode === "light" ? " rgb(247, 247, 247)" : null,
             },
           }}
           open
@@ -172,7 +212,7 @@ ResponsiveDrawer.propTypes = {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window: PropTypes.func,
+  Window: PropTypes.func,
 };
 
 export default ResponsiveDrawer;

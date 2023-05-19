@@ -28,7 +28,7 @@ const itemData = [
 
 export default function PermanentDrawerRight({theme}) {
   return (
-    <Box sx={{ display:{xs:"none", lg:"flex"} }}>
+    <Box sx={{ display:{xs:"none", lg:"flex"} , zIndex:"-1" }}>
       <CssBaseline />
     
       <Drawer
