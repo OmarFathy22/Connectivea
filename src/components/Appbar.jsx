@@ -25,7 +25,7 @@ import SearchResults from "./postModal/SearchResults";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
-  borderRadius: theme.shape.borderRadius,
+  
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
@@ -83,7 +83,9 @@ export default function PrimarySearchAppBar({
     setOpenSearchMenu(true)
   }
   const handleBlur = event => {
-    setOpenSearchMenu(false)
+    setTimeout(() => {
+      setOpenSearchMenu(false)
+    }, 500);
   };
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event);
@@ -101,15 +103,6 @@ export default function PrimarySearchAppBar({
   const {name} = JSON.parse(localStorage.getItem("user"));
   const {sub} = JSON.parse(localStorage.getItem("user"));
   const mobileMenuId = "primary-search-account-menu-mobile";
-  const UpdateCurrUser = () => {
-    localStorage.setItem(
-      "CurrUser",
-      JSON.stringify({
-        name: name,
-        picture: picture,
-      })
-    );
-  }
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -146,11 +139,8 @@ export default function PrimarySearchAppBar({
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem onClick={() => {
-         console.log("ues")
-        
-          navigate(`/profile/${sub}`);
-        
+      <MenuItem onClick={() => {  
+        navigate(`/profile/${sub}`);
         handleProfileMenuOpen();
       }}>
         <IconButton
@@ -204,7 +194,7 @@ export default function PrimarySearchAppBar({
                 onFocus={handleFocus}
                 onBlur={handleBlur}
               />
-            {OpenSearchMenu && <SearchResults Search={filterAccounts} theme={theme}/>}
+            {OpenSearchMenu && <SearchResults Search={filterAccounts.trim().toLocaleLowerCase()} theme={theme}/>}
             </Search>
         </Box>
           <Box sx={{ flexGrow: 1 }} />
@@ -247,14 +237,7 @@ export default function PrimarySearchAppBar({
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={() => {
-                    localStorage.setItem(
-                      "CurrUser",
-                      JSON.stringify({
-                        name: name,
-                        picture: picture,
-                      })
-                    );
-                    navigate(`/profile/${sub}`)
+                  navigate(`/profile/${sub}`)
                   handleProfileMenuOpen()
                 }}
                 color="inherit"

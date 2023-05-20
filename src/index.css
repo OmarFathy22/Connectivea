@@ -46,7 +46,9 @@ html {
 .display-none {
   display: none;
 }
-
+.searchItemContainer:hover{
+  background-color: #999 !important;
+}
 @media  (min-width:600px) {
   .Post{
     padding-left: 240px;

@@ -112,6 +112,7 @@ function ResponsiveDrawer({
                   } else if (item.text === "Logout") {
                     localStorage.setItem("user", JSON.stringify({}));
                     window.location.reload();
+                    navigate('/')
                   }
                 }}
                 key={index}

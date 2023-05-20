@@ -77,7 +77,7 @@ function Post({
                   "CurrUser",
                   JSON.stringify({
                     name: post.data().name,
-                    picture: post.data().picture,
+                    picture: post?.data()?.picture,
                   })
                 );
                 navigate(`/profile/${post.data().uId}`);
@@ -92,8 +92,7 @@ function Post({
             alt={post.data().picture}
             src={post.data().picture}
           >
-            {/* {post.data().name} */}
-            {post.data().picture}
+            {post.data().name.charAt()}
           </Avatar>
         }
         action={

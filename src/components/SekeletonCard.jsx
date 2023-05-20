@@ -8,7 +8,7 @@ import {
 function SekeletonCard() {
   return (
     <Card
-            sx={{ maxWidth: 450, mr: "auto", ml: "auto", mb: "40px" }}
+            sx={{ maxWidth: 450, mr: "auto", ml: "auto", mb: "40px" , mt:"100px" }}
           >
             <CardHeader
               avatar={

@@ -3,13 +3,13 @@ import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import { Outlet } from "react-router";
 import getDesignTokens from "./styles/MyTheme";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase/config";
 import { useEffect } from "react";
-import Appbar from './components/Appbar'
+import Appbar from "./components/Appbar";
 import jwtDecode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 import VideoBackground from "./components/VideoBackground";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
+import { useNavigate } from "react-router";
 const Root = (props) => {
   const [user, setuser] = useState(
     JSON.parse(localStorage.getItem("user")) || {}
@@ -42,6 +42,26 @@ const Root = (props) => {
     const UserObject = jwtDecode(response.credential);
     localStorage.setItem("user", JSON.stringify(UserObject));
     setuser(UserObject);
+    const SetData = async () => {
+      const { name } = JSON.parse(localStorage.getItem("user"));
+      const { picture } = JSON.parse(localStorage.getItem("user"));
+      const { sub } = JSON.parse(localStorage.getItem("user"));
+      await setDoc(doc(db, "AllUsers", sub), {
+        name: name,
+        picture: picture,
+        uid: sub,
+      });
+      localStorage.setItem(
+        "CurrUser",
+        JSON.stringify({
+          name: name,
+          picture: picture,
+          sub : sub
+        })
+      );
+    };
+    SetData();
+  
   };
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -68,13 +88,13 @@ const Root = (props) => {
       )}
       {Object.keys(user).length !== 0 && (
         <Box>
-          <Appbar
-          showList={showList}
-          setshowList={setshowList}
-          handleDrawerToggle={handleDrawerToggle}
-          theme={theme}
-        />
-        
+          {/* <Appbar
+            showList={showList}
+            setshowList={setshowList}
+            handleDrawerToggle={handleDrawerToggle}
+            theme={theme}
+          /> */}
+
           <Outlet />
         </Box>
       )}

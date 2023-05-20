@@ -55,11 +55,11 @@ const Root = (props) => {
         }}
       >
         {/* Appbar is landing here */}
-        {/* <Appbar
+        <Appbar
           showList={showList}
           setshowList={setshowList}
           handleDrawerToggle={handleDrawerToggle}
-        /> */}
+        />
         <Box
         className = "Post"
           style={{

@@ -1,8 +1,6 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
+
 import {
   Box,
-  Button,
   createTheme,
   CssBaseline,
   Stack,
@@ -33,13 +31,17 @@ const Root = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box>
+      <Box sx={{
+          backgroundColor:
+            theme.palette.mode === "light" ? " rgb(248, 248, 248)" : null,
+          minHeight: "100vh !important",
+        }}>
         {/* Appbar is landing here */}
-        {/* <Appbar
+        <Appbar
           showList={showList}
           setshowList={setshowList}
           handleDrawerToggle={handleDrawerToggle}
-        /> */}
+        />
         <Stack direction="row">
           <DRAWER
             mobileOpen={mobileOpen}
@@ -53,14 +55,9 @@ const Root = (props) => {
           {/* <RightSection theme={theme} /> */}
           <RightDrawer theme={theme} />
         </Stack>
-        {/* Main content is landing here */}
-
-        <Outlet />
+        {/* <Outlet /> */}
       </Box>
 
-      {/* <Box sx={{display:"flex" , justifyContent:"center",  alignItems:"center" , height:"100vh" , border:"1px solid red"}}>
-      <Button onClick={handleGoogle}>Sign with Google</Button>
-      </Box> */}
     </ThemeProvider>
   );
 };
