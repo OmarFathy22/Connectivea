@@ -16,8 +16,8 @@ import Create from "@mui/icons-material/Create";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Divider, styled, Switch } from "@mui/material";
-import { useLocation, useNavigate } from "react-router";
-
+import {  useNavigate } from "react-router";
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
   height: 34,
@@ -81,6 +81,7 @@ function ResponsiveDrawer({
     { text: "/", icon: <HomeIcon /> },
     { text: "Profile", icon: <PersonIcon /> },
     { text: "Create", icon: <Create /> },
+    { text: "Bookmarks", icon: <BookmarksIcon /> },
     { text: "Logout", icon: <LogoutIcon />, path: "/logout" },
   ];
   const drawer = (
@@ -111,8 +112,12 @@ function ResponsiveDrawer({
                     navigate("/");
                   } else if (item.text === "Logout") {
                     localStorage.setItem("user", JSON.stringify({}));
+                    localStorage.setItem("CurrUser", JSON.stringify({}));
+                    localStorage.setItem("SignedIn" ,"true")
                     window.location.reload();
-                    navigate('/')
+                  }
+                   else if (item.text === "Bookmarks") {
+                    navigate('/bookmarks')
                   }
                 }}
                 key={index}

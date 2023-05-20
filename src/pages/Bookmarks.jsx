@@ -10,16 +10,11 @@ import Appbar from "../components/Appbar";
 import React, { useMemo, useState } from "react";
 import { Outlet } from "react-router";
 import getDesignTokens from "../styles/MyTheme";
-import MainContent from "../components/MainContent";
+import MainContent from "../components/MainContentForBookmarks";
 import DRAWER from "../components/DRAWER";
-import { useParams } from "react-router";
-import { db } from "../../firebase/config";
-import { useDocument } from "react-firebase-hooks/firestore";
- import { doc } from "firebase/firestore";
- import ProfileLoading from '../components/loadingProfile'
 const Root = (props) => {
-  const { uId } = useParams();
-  const [value, loading, error] = useDocument(doc(db, "AllUsers", uId));
+  const { sub } = JSON.parse(localStorage.getItem("CurrUser"))
+  const uId = sub;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -33,7 +28,6 @@ const Root = (props) => {
       : "dark"
   );
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -50,41 +44,6 @@ const Root = (props) => {
           setshowList={setshowList}
           handleDrawerToggle={handleDrawerToggle}
         />
-      <Box
-          className = "Post"
-            style={{
-              paddingTop: "100px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              border:{sm:"10px solid red"}
-            }}
-          >
-            {loading ? <ProfileLoading/> : (
-              <div style={{  display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column"}}>
-                <img
-              src={value?.data()?.picture}
-              alt="Profile Image"
-              // className="ShadowForProfile"
-              style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-            />
-            <h1
-              style={{
-                textAlign: "center",
-                backgroundColor:
-                  theme.palette.mode === "light" ? " rgb(248, 248, 248)" : null,
-              }}
-            >
-              {value?.data()?.name}
-            </h1>
-              </div>
-            )}
-          </Box>
-      
         <Stack direction="row">
           <DRAWER
             mobileOpen={mobileOpen}
@@ -97,7 +56,6 @@ const Root = (props) => {
           <MainContent
             theme={theme}
             uid={uId}
-          
           />
 
         </Stack>

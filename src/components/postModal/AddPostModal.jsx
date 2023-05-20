@@ -81,7 +81,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
       likes: 0,
       clickedlike: false,
       ListOfLikes: [],
-      SetOfLikes : [],
+      ListOfBookmarks: [],
       counter: 0,
       bookmarked: false,
     });

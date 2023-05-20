@@ -30,7 +30,6 @@ import {updateDoc} from "firebase/firestore";
 function Post({
   theme,
   deletePost,
-  updatePost,
   post,
   uid,
 
@@ -60,6 +59,22 @@ function Post({
       ListOfLikes: Data
      });
   };
+  const DeleteListOfBookmarks = async (id , uId , ListOfBookmarks ) => {
+    let Data = [];
+     Data =  ListOfBookmarks
+    Data.splice(Data.indexOf(sub) , 1)
+    await updateDoc(doc(db,uId, id), {
+      ListOfBookmarks: ListOfBookmarks.length ? Data : []
+     });
+  };
+  const AddListOfBookmarks = async (id , uId , ListOfBookmarks ) => {
+    let Data = [];  
+    Data =  ListOfBookmarks
+    Data.push(sub);
+    await updateDoc(doc(db,uId, id), {
+      ListOfBookmarks: Data
+     });
+  };
   const navigate = useNavigate();
   const location = useLocation();
   const { sub } = JSON.parse(localStorage.getItem("user"));
@@ -72,7 +87,6 @@ function Post({
         avatar={
           <Avatar
             onClick={() => {
-              if (location.pathname === "/") {
                 localStorage.setItem(
                   "CurrUser",
                   JSON.stringify({
@@ -82,7 +96,7 @@ function Post({
                 );
                 navigate(`/profile/${post.data().uId}`);
               }
-            }}
+            }
             sx={{
               color: theme.palette.getContrastText(post.data().color),
               bgcolor: post.data().color,
@@ -293,10 +307,18 @@ function Post({
               },
             },
           }}
-          onChange={(e) => {
-            updatePost(post.id, post.data().liked, e.target.checked);
+          onChange={() => {
+            if(post.data().ListOfBookmarks.includes(sub))
+            {
+              DeleteListOfBookmarks(post.data().id , post.data().uId , post.data().ListOfBookmarks)
+              DeleteListOfBookmarks(post.data().id , "AllPosts" , post.data().ListOfBookmarks)
+            }
+            else{
+              AddListOfBookmarks(post.data().id , post.data().uId , post.data().ListOfBookmarks)
+              AddListOfBookmarks(post.data().id , "AllPosts" , post.data().ListOfBookmarks)
+            }
           }}
-          checked={post.data().bookmarked}
+          checked={post.data().ListOfBookmarks.includes(sub)}
           icon={<BookmarkBorderOutlinedIcon />}
           checkedIcon={<BookmarkIcon />}
         />

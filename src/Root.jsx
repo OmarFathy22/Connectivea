@@ -1,20 +1,32 @@
 /* eslint-disable no-undef */
 import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React, { useMemo, useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import getDesignTokens from "./styles/MyTheme";
 import { useEffect } from "react";
-import Appbar from "./components/Appbar";
+// import Appbar from "./components/Appbar";
 import jwtDecode from "jwt-decode";
 import VideoBackground from "./components/VideoBackground";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
-import { useNavigate } from "react-router";
+// import Home from './pages/Home'
+
 const Root = (props) => {
+  const navigate = useNavigate();
+  const [contentVisible, setContentVisible] = useState(false);
   const [user, setuser] = useState(
     JSON.parse(localStorage.getItem("user")) || {}
   );
-
+  const SignedIn = localStorage.getItem("SignedIn");
+  useEffect(() => {
+    if (Object.keys(user).length !== 0) {
+      if(SignedIn == 'true'){
+        navigate('/');
+      }
+      // localStorage.setItem("SignedIn" , JSON.stringify("true"))
+      setContentVisible(true)
+    }
+  },[user  , navigate , SignedIn])
   useEffect(() => {
     const handleGoogleApiLoad = () => {
       google.accounts.id.initialize({
@@ -59,6 +71,8 @@ const Root = (props) => {
           sub : sub
         })
       );
+      localStorage.setItem("SignedIn" , "false")
+      
     };
     SetData();
   
@@ -77,7 +91,7 @@ const Root = (props) => {
       : "dark"
   );
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-
+  
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -86,7 +100,7 @@ const Root = (props) => {
           <div id="signInDiv"></div>
         </VideoBackground>
       )}
-      {Object.keys(user).length !== 0 && (
+      {contentVisible && (
         <Box>
           {/* <Appbar
             showList={showList}
@@ -94,8 +108,7 @@ const Root = (props) => {
             handleDrawerToggle={handleDrawerToggle}
             theme={theme}
           /> */}
-
-          <Outlet />
+         <Outlet/>
         </Box>
       )}
     </ThemeProvider>

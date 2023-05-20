@@ -85,7 +85,7 @@ export default function PrimarySearchAppBar({
   const handleBlur = event => {
     setTimeout(() => {
       setOpenSearchMenu(false)
-    }, 500);
+    }, 200);
   };
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event);
@@ -237,6 +237,13 @@ export default function PrimarySearchAppBar({
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={() => {
+                  localStorage.setItem(
+                    "CurrUser",
+                    JSON.stringify({
+                      name: name,
+                      picture: picture,
+                    })
+                  );
                   navigate(`/profile/${sub}`)
                   handleProfileMenuOpen()
                 }}

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 const SearchResults = ({ Search }) => {
   const [value, loading, error] = useCollection(collection(db, "AllUsers"));
   if (error) console.log(error);
-  if (loading) console.log("loading");
   const AllUsers = value?.docs;
   const filtered = AllUsers?.filter((item) => {
     return item.data().name.toLowerCase().includes(Search);
@@ -16,7 +15,7 @@ const SearchResults = ({ Search }) => {
     <div
       style={{ position: "absolute", top: "-60px", left: "0", width: "100%" }}
     >
-      <ul style={{ width: "100%", margin: "100px 0 0 0" }}>
+      <ul style={{ width: "100%", margin: "100px 0 0 0" , overflow:"auto" , maxHeight:"500px"}}>
         {filtered?.map((item, index) => {
           return (
             <div
