@@ -10,6 +10,7 @@ import VideoBackground from "./components/VideoBackground";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 // import Home from './pages/Home'
+import ScrollToTop from "./components/ScrollToTop";
 
 const Root = (props) => {
   const navigate = useNavigate();
@@ -102,6 +103,7 @@ const Root = (props) => {
       )}
       {contentVisible && (
         <Box>
+          <ScrollToTop/>
           {/* <Appbar
             showList={showList}
             setshowList={setshowList}

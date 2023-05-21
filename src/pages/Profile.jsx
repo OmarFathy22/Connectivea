@@ -19,7 +19,7 @@ import { useDocument } from "react-firebase-hooks/firestore";
  import ProfileLoading from '../components/loadingProfile'
 const Root = (props) => {
   const { uId } = useParams();
-  const [value, loading, error] = useDocument(doc(db, "AllUsers", uId));
+  const [value, loading] = useDocument(doc(db, "AllUsers", uId));
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

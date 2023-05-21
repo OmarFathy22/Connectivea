@@ -16,6 +16,7 @@ import {
 import AddPostModal from "./postModal/AddPostModal";
 import Post from "./Post";
 import SekeletonCard from "./SekeletonCard";
+
 const MainContent = ({ theme, uid }) => {
   const [FEELING, setFEELING] = useState(null);
   const [value, loading] = useCollection(
@@ -52,6 +53,7 @@ const MainContent = ({ theme, uid }) => {
     return (
       <Box
       sx={{
+        position:"relative",
         flexGrow: "1",
         pt: "100px",
         pl: { xs: "12px" },

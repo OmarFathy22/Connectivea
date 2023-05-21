@@ -2,8 +2,9 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 import { useNavigate } from "react-router";
+// eslint-disable-next-line react/prop-types
 const SearchResults = ({ Search }) => {
-  const [value, loading, error] = useCollection(collection(db, "AllUsers"));
+  const [value, error] = useCollection(collection(db, "AllUsers"));
   if (error) console.log(error);
   const AllUsers = value?.docs;
   const filtered = AllUsers?.filter((item) => {

@@ -9,8 +9,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Logo from '../me.jpg'
+import Logo from '../c5.png'
 import HomeIcon from "@mui/icons-material/Home";
 import Create from "@mui/icons-material/Create";
 import PersonIcon from "@mui/icons-material/Person";
@@ -87,16 +86,16 @@ function ResponsiveDrawer({
   const drawer = (
     <div>
       <Toolbar >
-          <Box sx={{display:"flex", justifyContent:"center",gap:"30px" ,  alignItems:"center"}}>
-            <img src={Logo} alt="O" width={"50px"} height={"50px"} style={{borderRadius:"50%"}} />
-            <Typography
+          <Box sx={{display:"flex", justifyContent:"center" , height:"64px" ,  alignItems:"center"}}>
+            <img src={Logo} alt="O" width={"200px"} height={"130px"} style={{borderRadius:"50%"}} />
+            {/* <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: "block" }, overflow: "initial", mr: "20px" ,textAlign:"center" }}
           >
             POSTATI
-          </Typography>
+          </Typography> */}
           </Box>
           </Toolbar>
           <Divider/>

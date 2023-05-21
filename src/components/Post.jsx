@@ -27,6 +27,7 @@ import { useNavigate, useLocation } from "react-router";
 import { doc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import {updateDoc} from "firebase/firestore";
+import ReplyIcon from '@mui/icons-material/Reply';
 function Post({
   theme,
   deletePost,
@@ -81,8 +82,9 @@ function Post({
   return (
     <Card
       key={post.date}
-      sx={{ maxWidth: 450, mr: "auto", ml: "auto", mb: "90px" }}
+      sx={{ maxWidth: 450, mr: "auto", ml: "auto", mb: "90px" , position:"relative" }}
     >
+      <ReplyIcon style={{position:"absolute" , top:"-0" , left:"-0"}}/>
       <CardHeader
         avatar={
           <Avatar
