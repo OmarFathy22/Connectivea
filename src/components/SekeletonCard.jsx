@@ -8,7 +8,7 @@ import {
 function SekeletonCard() {
   return (
     <Card
-            sx={{ maxWidth: 450, mr: "auto", ml: "auto", mb: "40px" , mt:"100px" }}
+            sx={{ maxWidth: 850, mr: "auto", ml: "auto", mb: "40px" , mt:"100px" }}
           >
             <CardHeader
               avatar={
@@ -41,7 +41,7 @@ function SekeletonCard() {
               </React.Fragment>
             </CardContent>
             <Skeleton
-              sx={{ height: 190, mb: "50px" }}
+              sx={{ height: 300, mb: "50px" }}
               animation="wave"
               variant="rectangular"
             />

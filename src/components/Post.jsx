@@ -26,17 +26,13 @@ import ShareIcon from "@mui/icons-material/Share";
 import { useNavigate, useLocation } from "react-router";
 import { doc } from "firebase/firestore";
 import { db } from "../../firebase/config";
-import {updateDoc} from "firebase/firestore";
-import ReplyIcon from '@mui/icons-material/Reply';
-function Post({
-  theme,
-  deletePost,
-  post,
-  uid,
-
-}) {
+import { updateDoc } from "firebase/firestore";
+import ReplyIcon from "@mui/icons-material/Reply";
+import { getDoc, setDoc } from "firebase/firestore";
+function Post({ theme, deletePost, post, uid, ID }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,61 +40,94 @@ function Post({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const DeleteListOfLikes = async (id , uId , ListOfLikes ) => {
+  const DeleteListOfLikes = async (id, uId, ListOfLikes) => {
     let Data = [];
-     Data =  ListOfLikes
-    Data.splice(Data.indexOf(sub) , 1)
-    await updateDoc(doc(db,uId, id), {
-      ListOfLikes: ListOfLikes.length ? Data : []
-     });
+    Data = ListOfLikes;
+    Data.splice(Data.indexOf(sub), 1);
+    await updateDoc(doc(db, uId, id), {
+      ListOfLikes: ListOfLikes.length ? Data : [],
+    });
   };
-  const AddListOfLikes = async (id , uId , ListOfLikes ) => {
-    let Data = [];  
-    Data =  ListOfLikes
-    Data.push(sub);
-    await updateDoc(doc(db,uId, id), {
-      ListOfLikes: Data
-     });
-  };
-  const DeleteListOfBookmarks = async (id , uId , ListOfBookmarks ) => {
+  const AddListOfLikes = async (id, uId, ListOfLikes) => {
     let Data = [];
-     Data =  ListOfBookmarks
-    Data.splice(Data.indexOf(sub) , 1)
-    await updateDoc(doc(db,uId, id), {
-      ListOfBookmarks: ListOfBookmarks.length ? Data : []
-     });
-  };
-  const AddListOfBookmarks = async (id , uId , ListOfBookmarks ) => {
-    let Data = [];  
-    Data =  ListOfBookmarks
+    Data = ListOfLikes;
     Data.push(sub);
-    await updateDoc(doc(db,uId, id), {
-      ListOfBookmarks: Data
-     });
+    await updateDoc(doc(db, uId, id), {
+      ListOfLikes: Data,
+    });
+  };
+  const DeleteListOfBookmarks = async (id, uId, ListOfBookmarks) => {
+    let Data = [];
+    Data = ListOfBookmarks;
+    Data.splice(Data.indexOf(sub), 1);
+    await updateDoc(doc(db, uId, id), {
+      ListOfBookmarks: ListOfBookmarks.length ? Data : [],
+    });
+  };
+  const AddListOfBookmarks = async (id, uId, ListOfBookmarks) => {
+    let Data = [];
+    Data = ListOfBookmarks;
+    Data.push(sub);
+    await updateDoc(doc(db, uId, id), {
+      ListOfBookmarks: Data,
+    });
   };
   const navigate = useNavigate();
   const location = useLocation();
   const { sub } = JSON.parse(localStorage.getItem("user"));
+
+  
+async function shareDocument(sourceCollection, sourceDocId, targetCollection, targetDocId, newData) {
+  try {
+    // Get reference to the source document
+    const sourceDocRef = doc(db, sourceCollection, sourceDocId);
+
+    // Get data from the source document
+    const sourceDocSnapshot = await getDoc(sourceDocRef);
+
+    if (!sourceDocSnapshot.exists()) {
+      console.log(`Source document ${sourceDocId} does not exist in collection ${sourceCollection}.`);
+      return;
+    }
+
+    const sourceDocData = sourceDocSnapshot.data();
+
+    // Update the data of the copied document with the new data
+    const updatedDocData = { ...sourceDocData, ...newData };
+
+    // Create a new document in the target collection with the updated data
+    const targetDocRef = doc(db, targetCollection, targetDocId);
+    await setDoc(targetDocRef, updatedDocData);
+  }
+  catch (error) {
+    console.log(error)
+  }
+}
   return (
     <Card
       key={post.date}
-      sx={{ maxWidth: 450, mr: "auto", ml: "auto", mb: "90px" , position:"relative" }}
+      sx={{
+        maxWidth: 850,
+        mr: "auto",
+        ml: "auto",
+        mb: "90px",
+        position: "relative",
+      }}
     >
-      <ReplyIcon style={{position:"absolute" , top:"-0" , left:"-0"}}/>
+    {post.data().shared  && <Box style={{ position: "absolute", top: "20px", right: "20px" , display:"flex" , justifyContent:"center" , alignItems:"center" , gap:"10px" }}><ReplyIcon  /> Reposted</Box>}
       <CardHeader
         avatar={
           <Avatar
             onClick={() => {
-                localStorage.setItem(
-                  "CurrUser",
-                  JSON.stringify({
-                    name: post.data().name,
-                    picture: post?.data()?.picture,
-                  })
-                );
-                navigate(`/profile/${post.data().uId}`);
-              }
-            }
+              localStorage.setItem(
+                "CurrUser",
+                JSON.stringify({
+                  name: post.data().name,
+                  picture: post?.data()?.picture,
+                })
+              );
+              navigate(`/profile/${post.data().uId}`);
+            }}
             sx={{
               color: theme.palette.getContrastText(post.data().color),
               bgcolor: post.data().color,
@@ -111,21 +140,21 @@ function Post({
             {post.data().name.charAt()}
           </Avatar>
         }
-        action={
-          <Box component="article">
-            <IconButton
-              aria-controls={open ? "fade-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={(e) => {
-                handleClick(e);
-              }}
-              aria-label="settings"
-            >
-              <MoreVertIcon />
-            </IconButton>
-          </Box>
-        }
+        // action={
+        //   <Box component="article">
+        //     <IconButton
+        //       aria-controls={open ? "fade-menu" : undefined}
+        //       aria-haspopup="true"
+        //       aria-expanded={open ? "true" : undefined}
+        //       onClick={(e) => {
+        //         handleClick(e);
+        //       }}
+        //       aria-label="settings"
+        //     >
+        //       <MoreVertIcon />
+        //     </IconButton>
+        //   </Box>
+        // }
         title={
           !post.data().feeling ? (
             <Typography
@@ -231,7 +260,7 @@ function Post({
       {post.data().mediaType === "image" && (
         <CardMedia
           component="img"
-          height="300"
+          height="400"
           image={post.data().media}
           alt="Paella dish"
         />
@@ -256,20 +285,55 @@ function Post({
           }}
           checked={post.data().ListOfLikes.includes(sub)}
           onChange={() => {
-            if(post.data().ListOfLikes.includes(sub))
-            {
-               DeleteListOfLikes(post.data().id , post.data().uId , post.data().ListOfLikes)
-               DeleteListOfLikes(post.data().id , "AllPosts" , post.data().ListOfLikes)
-            }
-            else{
-              AddListOfLikes(post.data().id , post.data().uId , post.data().ListOfLikes)
-              AddListOfLikes(post.data().id , "AllPosts" , post.data().ListOfLikes)
+            if (post.data().ListOfLikes.includes(sub)) {
+              DeleteListOfLikes(
+                post.data().id,
+                post.data().uId,
+                post.data().ListOfLikes
+              );
+              if(!post.data().shared ){
+                DeleteListOfLikes(
+                  post.data().id,
+                  "AllPosts",
+                  post.data().ListOfLikes
+                );
+              }
+            } else {
+              AddListOfLikes(
+                post.data().id,
+                post.data().uId,
+                post.data().ListOfLikes
+              );
+              if(!post.data().shared ){
+              AddListOfLikes(
+                post.data().id,
+                "AllPosts",
+                post.data().ListOfLikes
+              );
+              }
             }
           }}
           icon={<FavoriteBorder />}
           checkedIcon={<Favorite sx={{ color: "red" }} />}
         />
         <IconButton
+          onClick={async () => {
+            const newData = {
+              uId: sub,
+              id: ID,
+              color: "#30E3DF",
+              liked: false,
+              likes: 0,
+              clickedlike: false,
+              ListOfLikes: [],
+              ListOfBookmarks: [],
+              counter: 0,
+              bookmarked: false,
+              shared:true
+            }
+            shareDocument(post.data().uId, post.data().id, sub, ID , newData);
+
+          }}
           sx={{
             "&:hover": {
               backgroundColor: {
@@ -300,7 +364,7 @@ function Post({
             <DeleteIcon />
           </IconButton>
         )}
-        <Checkbox
+        {location.pathname === '/' && <Checkbox
           sx={{
             "&:hover": {
               backgroundColor: {
@@ -310,20 +374,38 @@ function Post({
             },
           }}
           onChange={() => {
-            if(post.data().ListOfBookmarks.includes(sub))
-            {
-              DeleteListOfBookmarks(post.data().id , post.data().uId , post.data().ListOfBookmarks)
-              DeleteListOfBookmarks(post.data().id , "AllPosts" , post.data().ListOfBookmarks)
-            }
-            else{
-              AddListOfBookmarks(post.data().id , post.data().uId , post.data().ListOfBookmarks)
-              AddListOfBookmarks(post.data().id , "AllPosts" , post.data().ListOfBookmarks)
+            if (post.data().ListOfBookmarks.includes(sub)) {
+              DeleteListOfBookmarks(
+                post.data().id,
+                post.data().uId,
+                post.data().ListOfBookmarks
+              );
+              if(!post.data().shared ){
+              DeleteListOfBookmarks(
+                post.data().id,
+                "AllPosts",
+                post.data().ListOfBookmarks
+              );
+              }
+            } else {
+              AddListOfBookmarks(
+                post.data().id,
+                post.data().uId,
+                post.data().ListOfBookmarks
+              );
+              if(!post.data().shared ){
+              AddListOfBookmarks(
+                post.data().id,
+                "AllPosts",
+                post.data().ListOfBookmarks
+              );
+              }
             }
           }}
           checked={post.data().ListOfBookmarks.includes(sub)}
           icon={<BookmarkBorderOutlinedIcon />}
           checkedIcon={<BookmarkIcon />}
-        />
+        />}
       </CardActions>
     </Card>
   );

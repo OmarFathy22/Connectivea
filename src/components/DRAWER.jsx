@@ -87,7 +87,9 @@ function ResponsiveDrawer({
     <div>
       <Toolbar >
           <Box sx={{display:"flex", justifyContent:"center" , height:"64px" ,  alignItems:"center"}}>
-            <img src={Logo} alt="O" width={"200px"} height={"130px"} style={{borderRadius:"50%"}} />
+            <img onClick={() => {
+              navigate('/')
+            }} src={Logo} alt="O" width={"200px"} height={"130px"} style={{borderRadius:"50%" , cursor:"pointer"}} />
             {/* <Typography
             variant="h6"
             noWrap

@@ -6,21 +6,16 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import LogoutIcon from "@mui/icons-material/Logout";
-import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Avatar, Button, Divider } from "@mui/material";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
-import { updateCurrentUser } from "firebase/auth";
 import SearchResults from "./postModal/SearchResults";
 
 const Search = styled("div")(({ theme }) => ({
@@ -119,14 +114,7 @@ export default function PrimarySearchAppBar({
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
+      
       <MenuItem>
         <IconButton
           size="large"
@@ -208,16 +196,7 @@ export default function PrimarySearchAppBar({
               },
             }}
           >
-            <IconButton
-              sx={{ width: "50px", height: "50px" }}
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
+          
             <IconButton
               sx={{ width: "50px", height: "50px" }}
               size="large"

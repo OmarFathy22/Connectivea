@@ -66,7 +66,7 @@ const MainContent = ({ theme, uid }) => {
         {value?.docs?.map((post , index) => {
         return(
           <Post
-          key={index} theme={theme}  deletePost={deletePost} post={post} uid = {uid}/>
+          key={index} theme={theme}  deletePost={deletePost} post={post} uid = {uid} ID = {ID}/>
         )
       })}
         <AddPostModal theme={theme} ID={ID} FEELING={FEELING} setFEELING={setFEELING} />

@@ -52,7 +52,7 @@ const Root = (props) => {
           />
           <MainContent theme={theme}  uid={"AllPosts"} />
           {/* <RightSection theme={theme} /> */}
-          <RightDrawer theme={theme} />
+          {/* <RightDrawer theme={theme} /> */}
         </Stack>
         {/* <Outlet /> */}
       </Box>

@@ -25,6 +25,7 @@ const MainContent = ({ theme, uid }) => {
   const filtered = value?.docs?.filter((item) => {
     return item.data().ListOfBookmarks.includes(UID);
   })
+  filtered?.reverse();
   const ID = new Date().getTime().toString();
   const n = 8;
   const deletePost = async (id) => {
