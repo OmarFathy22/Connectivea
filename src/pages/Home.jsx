@@ -11,7 +11,7 @@ import React, { useMemo, useState } from "react";
 import getDesignTokens from "../styles/MyTheme";
 import MainContent from "../components/MainContent";
 import DRAWER from "../components/DRAWER";
-import RightDrawer from "../components/RightDrawer";
+// import RightDrawer from "../components/RightDrawer";
 const Root = (props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {

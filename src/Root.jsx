@@ -11,23 +11,29 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 // import Home from './pages/Home'
 import ScrollToTop from "./components/ScrollToTop";
+import { getDoc } from "firebase/firestore";
 
 const Root = (props) => {
   const navigate = useNavigate();
   const [contentVisible, setContentVisible] = useState(false);
+  const [Loading, setLoading] = useState(true);
   const [user, setuser] = useState(
     JSON.parse(localStorage.getItem("user")) || {}
   );
   const SignedIn = localStorage.getItem("SignedIn");
   useEffect(() => {
     if (Object.keys(user).length !== 0) {
-      if(SignedIn == 'true'){
-        navigate('/');
+      if (SignedIn == "true") {
+        navigate("/");
       }
       // localStorage.setItem("SignedIn" , JSON.stringify("true"))
-      setContentVisible(true)
+      setTimeout(() => {
+        setContentVisible(true);
+        setLoading(false)
+      }, 1000);
+      // window.location.reload() 
     }
-  },[user  , navigate , SignedIn])
+  }, [user, navigate, SignedIn]);
   useEffect(() => {
     const handleGoogleApiLoad = () => {
       google.accounts.id.initialize({
@@ -55,35 +61,39 @@ const Root = (props) => {
     const UserObject = jwtDecode(response.credential);
     localStorage.setItem("user", JSON.stringify(UserObject));
     setuser(UserObject);
+    const { name } = JSON.parse(localStorage.getItem("user"));
+    const { picture } = JSON.parse(localStorage.getItem("user"));
+    const { sub } = JSON.parse(localStorage.getItem("user"));
     const SetData = async () => {
-      const { name } = JSON.parse(localStorage.getItem("user"));
-      const { picture } = JSON.parse(localStorage.getItem("user"));
-      const { sub } = JSON.parse(localStorage.getItem("user"));
       await setDoc(doc(db, "AllUsers", sub), {
         name: name,
         picture: picture,
         uid: sub,
+        notification: [],
       });
-      localStorage.setItem(
-        "CurrUser",
-        JSON.stringify({
-          name: name,
-          picture: picture,
-          sub : sub
-        })
-      );
-      localStorage.setItem("SignedIn" , "false")
-      
     };
-    SetData();
-  
+    const docRef = doc(db, "AllUsers" , sub);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      SetData();
+    }
+    localStorage.setItem(
+      "CurrUser",
+      JSON.stringify({
+        name: name,
+        picture: picture,
+        sub: sub,
+      })
+    );
+    localStorage.setItem("SignedIn", "false");
+    location.reload()
   };
 
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-  const [showList, setshowList] = useState("none");
+  // const [mobileOpen, setMobileOpen] = React.useState(false);
+  // const handleDrawerToggle = () => {
+  //   setMobileOpen(!mobileOpen);
+  // };
+  // const [showList, setshowList] = useState("none");
   const [mode, setmyMode] = useState(
     localStorage.getItem("currentMode") === null
       ? "dark"
@@ -92,7 +102,7 @@ const Root = (props) => {
       : "dark"
   );
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-  
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -103,14 +113,14 @@ const Root = (props) => {
       )}
       {contentVisible && (
         <Box>
-          <ScrollToTop/>
+          <ScrollToTop />
           {/* <Appbar
             showList={showList}
             setshowList={setshowList}
             handleDrawerToggle={handleDrawerToggle}
             theme={theme}
           /> */}
-         <Outlet/>
+          <Outlet />
         </Box>
       )}
     </ThemeProvider>

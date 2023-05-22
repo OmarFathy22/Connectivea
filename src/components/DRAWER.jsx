@@ -90,14 +90,6 @@ function ResponsiveDrawer({
             <img onClick={() => {
               navigate('/')
             }} src={Logo} alt="O" width={"200px"} height={"130px"} style={{borderRadius:"50%" , cursor:"pointer"}} />
-            {/* <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "block" }, overflow: "initial", mr: "20px" ,textAlign:"center" }}
-          >
-            POSTATI
-          </Typography> */}
           </Box>
           </Toolbar>
           <Divider/>
@@ -170,7 +162,7 @@ function ResponsiveDrawer({
 
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
         aria-label="mailbox folders"
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -183,7 +175,7 @@ function ResponsiveDrawer({
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { sm: "block", md: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
@@ -197,7 +189,7 @@ function ResponsiveDrawer({
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: "none", sm: "block" },
+            display: {xs:"none" ,  md: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,

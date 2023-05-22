@@ -17,7 +17,6 @@ import {
   Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
@@ -29,14 +28,11 @@ import { db } from "../../firebase/config";
 import { updateDoc } from "firebase/firestore";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { getDoc, setDoc } from "firebase/firestore";
+
 function Post({ theme, deletePost, post, uid, ID }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -72,37 +68,59 @@ function Post({ theme, deletePost, post, uid, ID }) {
       ListOfBookmarks: Data,
     });
   };
+  const updateNotification = async (id, uId, text , type) => {
+    const docRef = doc(db, "AllUsers", id);
+    const docSnap = await getDoc(docRef);
+    let Data = [];
+    Data = docSnap?.data()?.notification;
+    if(id !== sub)
+    {
+      Data.push({ name: name, uid: sub, picture: picture, id:post.data().id , text:text , type: type });
+    }
+
+    if (docSnap.exists()) {
+      await updateDoc(doc(db, "AllUsers", id), {
+        notification: Data,
+        Length : Data.length,
+      });
+    }
+  };
   const navigate = useNavigate();
   const location = useLocation();
   const { sub } = JSON.parse(localStorage.getItem("user"));
+  const { name } = JSON.parse(localStorage.getItem("user"));
+  const { picture } = JSON.parse(localStorage.getItem("user"));
 
-  
-async function shareDocument(sourceCollection, sourceDocId, targetCollection, targetDocId, newData) {
-  try {
-    // Get reference to the source document
-    const sourceDocRef = doc(db, sourceCollection, sourceDocId);
+  async function shareDocument(
+    sourceCollection,
+    sourceDocId,
+    targetCollection,
+    targetDocId,
+    newData
+  ) {
+    try {
+      // Get reference to the source document
+      const sourceDocRef = doc(db, sourceCollection, sourceDocId);
 
-    // Get data from the source document
-    const sourceDocSnapshot = await getDoc(sourceDocRef);
+      // Get data from the source document
+      const sourceDocSnapshot = await getDoc(sourceDocRef);
 
-    if (!sourceDocSnapshot.exists()) {
-      console.log(`Source document ${sourceDocId} does not exist in collection ${sourceCollection}.`);
-      return;
+      if (!sourceDocSnapshot.exists()) {
+        return;
+      }
+
+      const sourceDocData = sourceDocSnapshot.data();
+
+      // Update the data of the copied document with the new data
+      const updatedDocData = { ...sourceDocData, ...newData };
+
+      // Create a new document in the target collection with the updated data
+      const targetDocRef = doc(db, targetCollection, targetDocId);
+      await setDoc(targetDocRef, updatedDocData);
+    } catch (error) {
+      console.log(error);
     }
-
-    const sourceDocData = sourceDocSnapshot.data();
-
-    // Update the data of the copied document with the new data
-    const updatedDocData = { ...sourceDocData, ...newData };
-
-    // Create a new document in the target collection with the updated data
-    const targetDocRef = doc(db, targetCollection, targetDocId);
-    await setDoc(targetDocRef, updatedDocData);
   }
-  catch (error) {
-    console.log(error)
-  }
-}
   return (
     <Card
       key={post.date}
@@ -114,7 +132,21 @@ async function shareDocument(sourceCollection, sourceDocId, targetCollection, ta
         position: "relative",
       }}
     >
-    {post.data().shared  && <Box style={{ position: "absolute", top: "20px", right: "20px" , display:"flex" , justifyContent:"center" , alignItems:"center" , gap:"10px" }}><ReplyIcon  /> Reposted</Box>}
+      {post.data().shared && (
+        <Box
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <ReplyIcon /> Reposted
+        </Box>
+      )}
       <CardHeader
         avatar={
           <Avatar
@@ -260,9 +292,11 @@ async function shareDocument(sourceCollection, sourceDocId, targetCollection, ta
       {post.data().mediaType === "image" && (
         <CardMedia
           component="img"
-          height="400"
+          max-height="300"
           image={post.data().media}
           alt="Paella dish"
+          style={{maxHeight:"400px"}}
+          
         />
       )}
       {post.data().mediaType === "video" && (
@@ -291,7 +325,8 @@ async function shareDocument(sourceCollection, sourceDocId, targetCollection, ta
                 post.data().uId,
                 post.data().ListOfLikes
               );
-              if(!post.data().shared ){
+
+              if (!post.data().shared) {
                 DeleteListOfLikes(
                   post.data().id,
                   "AllPosts",
@@ -304,12 +339,18 @@ async function shareDocument(sourceCollection, sourceDocId, targetCollection, ta
                 post.data().uId,
                 post.data().ListOfLikes
               );
-              if(!post.data().shared ){
-              AddListOfLikes(
-                post.data().id,
-                "AllPosts",
-                post.data().ListOfLikes
+              updateNotification(
+                post.data().uId,
+                "AllUsers",
+                "loves your post",
+                "love"
               );
+              if (!post.data().shared) {
+                AddListOfLikes(
+                  post.data().id,
+                  "AllPosts",
+                  post.data().ListOfLikes
+                );
               }
             }
           }}
@@ -329,10 +370,15 @@ async function shareDocument(sourceCollection, sourceDocId, targetCollection, ta
               ListOfBookmarks: [],
               counter: 0,
               bookmarked: false,
-              shared:true
-            }
-            shareDocument(post.data().uId, post.data().id, sub, ID , newData);
-
+              shared: true,
+            };
+            updateNotification(
+              post.data().uId,
+              "AllUsers",
+              "shared your post",
+              "share"
+            );
+            shareDocument(post.data().uId, post.data().id, sub, ID, newData);
           }}
           sx={{
             "&:hover": {
@@ -364,48 +410,50 @@ async function shareDocument(sourceCollection, sourceDocId, targetCollection, ta
             <DeleteIcon />
           </IconButton>
         )}
-        {location.pathname === '/' && <Checkbox
-          sx={{
-            "&:hover": {
-              backgroundColor: {
-                xs: "transparent",
-                md: "rgba(255, 255, 255, 0.08)",
+        {location.pathname === "/" && (
+          <Checkbox
+            sx={{
+              "&:hover": {
+                backgroundColor: {
+                  xs: "transparent",
+                  md: "rgba(255, 255, 255, 0.08)",
+                },
               },
-            },
-          }}
-          onChange={() => {
-            if (post.data().ListOfBookmarks.includes(sub)) {
-              DeleteListOfBookmarks(
-                post.data().id,
-                post.data().uId,
-                post.data().ListOfBookmarks
-              );
-              if(!post.data().shared ){
-              DeleteListOfBookmarks(
-                post.data().id,
-                "AllPosts",
-                post.data().ListOfBookmarks
-              );
+            }}
+            onChange={() => {
+              if (post.data().ListOfBookmarks.includes(sub)) {
+                DeleteListOfBookmarks(
+                  post.data().id,
+                  post.data().uId,
+                  post.data().ListOfBookmarks
+                );
+                if (!post.data().shared) {
+                  DeleteListOfBookmarks(
+                    post.data().id,
+                    "AllPosts",
+                    post.data().ListOfBookmarks
+                  );
+                }
+              } else {
+                AddListOfBookmarks(
+                  post.data().id,
+                  post.data().uId,
+                  post.data().ListOfBookmarks
+                );
+                if (!post.data().shared) {
+                  AddListOfBookmarks(
+                    post.data().id,
+                    "AllPosts",
+                    post.data().ListOfBookmarks
+                  );
+                }
               }
-            } else {
-              AddListOfBookmarks(
-                post.data().id,
-                post.data().uId,
-                post.data().ListOfBookmarks
-              );
-              if(!post.data().shared ){
-              AddListOfBookmarks(
-                post.data().id,
-                "AllPosts",
-                post.data().ListOfBookmarks
-              );
-              }
-            }
-          }}
-          checked={post.data().ListOfBookmarks.includes(sub)}
-          icon={<BookmarkBorderOutlinedIcon />}
-          checkedIcon={<BookmarkIcon />}
-        />}
+            }}
+            checked={post.data().ListOfBookmarks.includes(sub)}
+            icon={<BookmarkBorderOutlinedIcon />}
+            checkedIcon={<BookmarkIcon />}
+          />
+        )}
       </CardActions>
     </Card>
   );

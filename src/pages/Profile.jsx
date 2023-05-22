@@ -58,7 +58,8 @@ const Root = (props) => {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
-              border:{sm:"10px solid red"}
+              width:"100%",
+              border:{sm:"10px solid red !important"}
             }}
           >
             {loading ? <ProfileLoading/> : (
