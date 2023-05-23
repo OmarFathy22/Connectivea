@@ -438,7 +438,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
         OPEN={openPostsnackbar}
         setOPEN={setopenPostsnackbar}
         Message="New Post Added Successfully"
-        time={5000}
+        time={3000}
         y={"top"}
         x={"center"}
       />

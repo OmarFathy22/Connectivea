@@ -29,7 +29,8 @@ import { updateDoc } from "firebase/firestore";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { getDoc, setDoc } from "firebase/firestore";
 import YouSure from './YouSure'
-import YouSureDelete from './YouSureDelete'
+import YouSureDelete from './YouSure'
+
 
 function Post({ theme, deletePost, post, uid, ID }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -394,6 +395,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
         >
           <ShareIcon />
         </IconButton>
+      
         <YouSure dofunction={() => {
           updateNotification(
             post?.data()?.uId,
