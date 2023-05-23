@@ -28,13 +28,33 @@ import { db } from "../../firebase/config";
 import { updateDoc } from "firebase/firestore";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { getDoc, setDoc } from "firebase/firestore";
+import YouSure from './YouSure'
+import YouSureDelete from './YouSureDelete'
 
 function Post({ theme, deletePost, post, uid, ID }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [OpenShareModal, setOpenShareModal] = useState(false);
+  const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const { sub } = JSON.parse(localStorage.getItem("user"));
+  const { name } = JSON.parse(localStorage.getItem("user"));
+  const { picture } = JSON.parse(localStorage.getItem("user"));
+  const newData = {
+    uId: sub,
+    id: ID,
+    color: "#30E3DF",
+    liked: false,
+    likes: 0,
+    clickedlike: false,
+    ListOfLikes: [],
+    ListOfBookmarks: [],
+    counter: 0,
+    bookmarked: false,
+    shared: true,
   };
   const DeleteListOfLikes = async (id, uId, ListOfLikes) => {
     let Data = [];
@@ -77,19 +97,20 @@ function Post({ theme, deletePost, post, uid, ID }) {
     {
       Data?.push({ name: name, uid: sub, picture: picture, id:post.data().id , text:text , type: type });
     }
-
+    let Length = 0;
+    if(id !== sub) {
+      Length = Data?.Length
+    }
     if (docSnap.exists()) {
       await updateDoc(doc(db, "AllUsers", id), {
         notification: Data,
-        Length : Data.length,
+        Length : Length,
       });
     }
   };
   const navigate = useNavigate();
   const location = useLocation();
-  const { sub } = JSON.parse(localStorage.getItem("user"));
-  const { name } = JSON.parse(localStorage.getItem("user"));
-  const { picture } = JSON.parse(localStorage.getItem("user"));
+  
 
   async function shareDocument(
     sourceCollection,
@@ -358,27 +379,8 @@ function Post({ theme, deletePost, post, uid, ID }) {
           checkedIcon={<Favorite sx={{ color: "red" }} />}
         />
         <IconButton
-          onClick={async () => {
-            const newData = {
-              uId: sub,
-              id: ID,
-              color: "#30E3DF",
-              liked: false,
-              likes: 0,
-              clickedlike: false,
-              ListOfLikes: [],
-              ListOfBookmarks: [],
-              counter: 0,
-              bookmarked: false,
-              shared: true,
-            };
-            updateNotification(
-              post?.data()?.uId,
-              "AllUsers",
-              "shared your post",
-              "share"
-            );
-            shareDocument(post?.data()?.uId, post?.data()?.id, sub, ID, newData);
+          onClick={() => {
+            setOpenShareModal(true)
           }}
           sx={{
             "&:hover": {
@@ -392,6 +394,15 @@ function Post({ theme, deletePost, post, uid, ID }) {
         >
           <ShareIcon />
         </IconButton>
+        <YouSure dofunction={() => {
+          updateNotification(
+            post?.data()?.uId,
+            "AllUsers",
+            "shared your post",
+            "share"
+          );
+          shareDocument(post?.data()?.uId, post?.data()?.id, sub, ID, newData);
+        }} open ={OpenShareModal} setOpen={setOpenShareModal} text={"Are You sure you want to share this Post?"}/>
         <Box sx={{ flexGrow: "1" }} />
         {uid === JSON.parse(localStorage.getItem("user")).sub && (
           <IconButton
@@ -404,12 +415,16 @@ function Post({ theme, deletePost, post, uid, ID }) {
               },
             }}
             onClick={() => {
-              deletePost(post?.id);
+              setOpenDeleteModal(true)
             }}
           >
             <DeleteIcon />
           </IconButton>
+          
         )}
+        <YouSureDelete dofunction={() => {
+          deletePost(post?.id)
+        }} open={OpenDeleteModal} setOpen={setOpenDeleteModal} text={"Are you sure you want to delete this Post?"}/>
         {location.pathname === "/" && (
           <Checkbox
             sx={{
