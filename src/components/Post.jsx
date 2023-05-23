@@ -39,7 +39,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
   const DeleteListOfLikes = async (id, uId, ListOfLikes) => {
     let Data = [];
     Data = ListOfLikes;
-    Data.splice(Data.indexOf(sub), 1);
+    Data?.splice(Data.indexOf(sub), 1);
     await updateDoc(doc(db, uId, id), {
       ListOfLikes: ListOfLikes.length ? Data : [],
     });
@@ -47,7 +47,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
   const AddListOfLikes = async (id, uId, ListOfLikes) => {
     let Data = [];
     Data = ListOfLikes;
-    Data.push(sub);
+    Data?.push(sub);
     await updateDoc(doc(db, uId, id), {
       ListOfLikes: Data,
     });
@@ -63,7 +63,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
   const AddListOfBookmarks = async (id, uId, ListOfBookmarks) => {
     let Data = [];
     Data = ListOfBookmarks;
-    Data.push(sub);
+    Data?.push(sub);
     await updateDoc(doc(db, uId, id), {
       ListOfBookmarks: Data,
     });
@@ -75,7 +75,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
     Data = docSnap?.data()?.notification;
     if(id !== sub)
     {
-      Data.push({ name: name, uid: sub, picture: picture, id:post.data().id , text:text , type: type });
+      Data?.push({ name: name, uid: sub, picture: picture, id:post.data().id , text:text , type: type });
     }
 
     if (docSnap.exists()) {
@@ -158,18 +158,18 @@ function Post({ theme, deletePost, post, uid, ID }) {
                   picture: post?.data()?.picture,
                 })
               );
-              navigate(`/profile/${post.data().uId}`);
+              navigate(`/profile/${post?.data()?.uId}`);
             }}
             sx={{
-              color: theme.palette.getContrastText(post.data().color),
-              bgcolor: post.data().color,
+              color: theme.palette.getContrastText(post?.data()?.color),
+              bgcolor: post?.data()?.color,
               cursor: "pointer",
             }}
             aria-label="recipe"
-            alt={post.data().picture}
-            src={post.data().picture}
+            alt={post?.data()?.picture}
+            src={post?.data()?.picture}
           >
-            {post.data().name.charAt()}
+            {post?.data()?.name.charAt()}
           </Avatar>
         }
         // action={
@@ -188,25 +188,25 @@ function Post({ theme, deletePost, post, uid, ID }) {
         //   </Box>
         // }
         title={
-          !post.data().feeling ? (
+          !post?.data()?.feeling ? (
             <Typography
               onClick={() => {
                 if (location.pathname === "/") {
                   localStorage.setItem(
                     "CurrUser",
                     JSON.stringify({
-                      name: post.data().name,
-                      picture: post.data().picture,
+                      name: post?.data()?.name,
+                      picture: post?.data()?.picture,
                     })
                   );
-                  navigate(`/profile/${post.data().uId}`);
+                  navigate(`/profile/${post?.data()?.uId}`);
                 }
               }}
               sx={{ fontWeight: "300", cursor: "pointer" }}
               variant="body1"
               color="inherit"
             >
-              {post.data().name}{" "}
+              {post?.data()?.name}{" "}
             </Typography>
           ) : (
             <Stack direction="row">
@@ -216,18 +216,18 @@ function Post({ theme, deletePost, post, uid, ID }) {
                     localStorage.setItem(
                       "CurrUser",
                       JSON.stringify({
-                        name: post.data().name,
-                        picture: post.data().picture,
+                        name: post?.data()?.name,
+                        picture: post?.data()?.picture,
                       })
                     );
-                    navigate(`/profile/${post.data().uId}`);
+                    navigate(`/profile/${post?.data()?.uId}`);
                   }
                 }}
                 sx={{ fontWeight: "300", cursor: "pointer" }}
                 variant="body1"
                 color="inherit"
               >
-                {post.data().name}
+                {post?.data()?.name}
               </Typography>
               <Typography
                 sx={{
@@ -249,12 +249,12 @@ function Post({ theme, deletePost, post, uid, ID }) {
                 variant="body1"
                 color="inherit"
               >
-                {post.data().feeling}{" "}
+                {post?.data()?.feeling}{" "}
               </Typography>
             </Stack>
           )
         }
-        subheader={post.data().date}
+        subheader={post?.data()?.date}
       />
       <Menu
         id="fade-menu"
@@ -286,27 +286,27 @@ function Post({ theme, deletePost, post, uid, ID }) {
           variant="body2"
           color="text.secondary"
         >
-          {post.data().body}
+          {post?.data()?.body}
         </Typography>
       </CardContent>
-      {post.data().mediaType === "image" && (
+      {post?.data()?.mediaType === "image" && (
         <CardMedia
           component="img"
           max-height="300"
-          image={post.data().media}
+          image={post?.data()?.media}
           alt="Paella dish"
           style={{maxHeight:"400px"}}
           
         />
       )}
-      {post.data().mediaType === "video" && (
-        <video src={post.data().media} width="100%" height="300" controls>
+      {post?.data()?.mediaType === "video" && (
+        <video src={post?.data()?.media} width="100%" height="300" controls>
           Your browser does not support HTML video.
         </video>
       )}
 
       <CardActions disableSpacing>
-        <span>{post.data().ListOfLikes.length}</span>
+        <span>{post?.data()?.ListOfLikes.length}</span>
         <Checkbox
           // hover
           sx={{
@@ -317,16 +317,16 @@ function Post({ theme, deletePost, post, uid, ID }) {
               },
             },
           }}
-          checked={post.data().ListOfLikes.includes(sub)}
+          checked={post?.data()?.ListOfLikes.includes(sub)}
           onChange={() => {
-            if (post.data().ListOfLikes.includes(sub)) {
+            if (post?.data()?.ListOfLikes.includes(sub)) {
               DeleteListOfLikes(
-                post.data().id,
-                post.data().uId,
-                post.data().ListOfLikes
+                post?.data()?.id,
+                post?.data()?.uId,
+                post?.data()?.ListOfLikes
               );
 
-              if (!post.data().shared) {
+              if (!post?.data()?.shared) {
                 DeleteListOfLikes(
                   post.data().id,
                   "AllPosts",
@@ -335,21 +335,21 @@ function Post({ theme, deletePost, post, uid, ID }) {
               }
             } else {
               AddListOfLikes(
-                post.data().id,
-                post.data().uId,
-                post.data().ListOfLikes
+                post?.data()?.id,
+                post?.data()?.uId,
+                post?.data()?.ListOfLikes
               );
               updateNotification(
-                post.data().uId,
+                post?.data()?.uId,
                 "AllUsers",
                 "loves your post",
                 "love"
               );
-              if (!post.data().shared) {
+              if (!post?.data()?.shared) {
                 AddListOfLikes(
-                  post.data().id,
+                  post?.data()?.id,
                   "AllPosts",
-                  post.data().ListOfLikes
+                  post?.data()?.ListOfLikes
                 );
               }
             }
@@ -373,12 +373,12 @@ function Post({ theme, deletePost, post, uid, ID }) {
               shared: true,
             };
             updateNotification(
-              post.data().uId,
+              post?.data()?.uId,
               "AllUsers",
               "shared your post",
               "share"
             );
-            shareDocument(post.data().uId, post.data().id, sub, ID, newData);
+            shareDocument(post?.data()?.uId, post?.data()?.id, sub, ID, newData);
           }}
           sx={{
             "&:hover": {
@@ -404,7 +404,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
               },
             }}
             onClick={() => {
-              deletePost(post.id);
+              deletePost(post?.id);
             }}
           >
             <DeleteIcon />
@@ -423,33 +423,33 @@ function Post({ theme, deletePost, post, uid, ID }) {
             onChange={() => {
               if (post.data().ListOfBookmarks.includes(sub)) {
                 DeleteListOfBookmarks(
-                  post.data().id,
-                  post.data().uId,
-                  post.data().ListOfBookmarks
+                  post?.data()?.id,
+                  post?.data()?.uId,
+                  post?.data()?.ListOfBookmarks
                 );
-                if (!post.data().shared) {
+                if (!post?.data()?.shared) {
                   DeleteListOfBookmarks(
-                    post.data().id,
+                    post?.data()?.id,
                     "AllPosts",
-                    post.data().ListOfBookmarks
+                    post?.data()?.ListOfBookmarks
                   );
                 }
               } else {
                 AddListOfBookmarks(
-                  post.data().id,
-                  post.data().uId,
-                  post.data().ListOfBookmarks
+                  post?.data()?.id,
+                  post?.data()?.uId,
+                  post?.data()?.ListOfBookmarks
                 );
-                if (!post.data().shared) {
+                if (!post?.data()?.shared) {
                   AddListOfBookmarks(
-                    post.data().id,
+                    post?.data()?.id,
                     "AllPosts",
-                    post.data().ListOfBookmarks
+                    post?.data()?.ListOfBookmarks
                   );
                 }
               }
             }}
-            checked={post.data().ListOfBookmarks.includes(sub)}
+            checked={post?.data()?.ListOfBookmarks.includes(sub)}
             icon={<BookmarkBorderOutlinedIcon />}
             checkedIcon={<BookmarkIcon />}
           />

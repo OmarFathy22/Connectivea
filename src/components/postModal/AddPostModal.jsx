@@ -199,10 +199,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
             <Typography component="div" sx={{ mt: 2 }}>
               <Stack direction="row" sx={{ alignItems: "center" }}>
                 <Avatar
-                  alt={
-                    JSON.parse(localStorage.getItem("user")).name.toString() ||
-                    "N"
-                  }
+                  alt= "logo"
                   src={JSON.parse(localStorage.getItem("user")).picture}
                 >
                   {JSON.parse(localStorage.getItem("user")).picture}

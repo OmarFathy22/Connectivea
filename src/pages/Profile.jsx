@@ -62,7 +62,7 @@ const Root = (props) => {
               border:{sm:"10px solid red !important"}
             }}
           >
-            {loading ? <ProfileLoading/> : (
+            {loading ? <ProfileLoading theme = {theme}/> : (
               <div style={{  display: "flex",
               justifyContent: "center",
               alignItems: "center",

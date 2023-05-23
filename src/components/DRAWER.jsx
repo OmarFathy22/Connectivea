@@ -99,14 +99,15 @@ function ResponsiveDrawer({
           <label htmlFor ={item.text === 'Create' ? "FabIconClick": ""} key={index}>
               <ListItemButton
                 onClick={() => {
+                  handleDrawerToggle();
                   if (item.text === "Profile") {
                     navigate(`/profile/${sub}`);
                   } else if (item.text === "/") {
                     navigate("/");
                   } else if (item.text === "Logout") {
-                    localStorage.setItem("user", JSON.stringify({}));
+                    // localStorage.setItem("user", JSON.stringify({}));
                     localStorage.setItem("CurrUser", JSON.stringify({}));
-                    localStorage.setItem("SignedIn" ,"true")
+                    localStorage.setItem("SignedIn" ,"false")
                     window.location.reload();
                   }
                    else if (item.text === "Bookmarks") {
