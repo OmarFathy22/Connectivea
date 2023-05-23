@@ -69,7 +69,7 @@ const Root = (props) => {
               flexDirection: "column"}}>
                 <img
               src={value?.data()?.picture}
-              alt="Profile Image"
+              alt="Image"
               // className="ShadowForProfile"
               style={{ width: "150px", height: "150px", borderRadius: "50%" }}
             />

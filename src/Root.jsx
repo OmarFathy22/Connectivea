@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import  { useMemo, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import getDesignTokens from "./styles/MyTheme";
 import { useEffect } from "react";
@@ -84,7 +84,7 @@ const Root = (props) => {
     localStorage.setItem("SignedIn", "true");
       setTimeout(() => {
         location.reload()
-      }, 1000);
+      }, 700);
   };
 
   // const [mobileOpen, setMobileOpen] = React.useState(false);

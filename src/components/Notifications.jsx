@@ -28,7 +28,6 @@ export default function FadeMenu() {
   //  if(loading)return <Loading/>
   const Data = value?.data()?.notification;
   Data?.reverse();
-  console.log("Omar" , Data)
   return (
     <div style={{width:"100%"}}>
       <IconButton
