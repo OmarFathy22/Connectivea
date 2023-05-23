@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import  { useMemo, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import getDesignTokens from "./styles/MyTheme";
 import { useEffect } from "react";
@@ -16,22 +16,18 @@ import { getDoc } from "firebase/firestore";
 const Root = (props) => {
   const navigate = useNavigate();
   const [contentVisible, setContentVisible] = useState(false);
-  const [Loading, setLoading] = useState(true);
   const [user, setuser] = useState(
     JSON.parse(localStorage.getItem("user")) || {}
   );
+   
   const SignedIn = localStorage.getItem("SignedIn");
   useEffect(() => {
-    if (Object.keys(user).length !== 0) {
       if (SignedIn == "true") {
-        navigate("/");
-      }
-      // localStorage.setItem("SignedIn" , JSON.stringify("true"))
-      setTimeout(() => {
+         if(Object.keys(user).length === 0)
+         {
+          navigate('/')
+         }
         setContentVisible(true);
-        setLoading(false)
-      }, 1000);
-      // window.location.reload() 
     }
   }, [user, navigate, SignedIn]);
   useEffect(() => {
@@ -85,8 +81,10 @@ const Root = (props) => {
         sub: sub,
       })
     );
-    localStorage.setItem("SignedIn", "false");
-    location.reload()
+    localStorage.setItem("SignedIn", "true");
+      setTimeout(() => {
+        location.reload()
+      }, 700);
   };
 
   // const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -106,7 +104,7 @@ const Root = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {Object.keys(user).length === 0 && (
+      {localStorage.getItem("SignedIn") === "false" && (
         <VideoBackground>
           <div id="signInDiv"></div>
         </VideoBackground>

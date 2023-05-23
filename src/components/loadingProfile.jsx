@@ -2,12 +2,14 @@ import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export default function SkeletonColor() {
+export default function SkeletonColor({theme}) {
   return (
-   <Box sx={{display:"flex" , flexDirection:"column" , justifyContent:"center" , alignItems:"center"}}> 
+   <Box sx={{display:"flex" , flexDirection:"column" , justifyContent:"center" , alignItems:"center" ,   backgroundColor:
+   theme.palette.mode === "light" ? " rgb(248, 248, 248)" : null,}}> 
     <Box
       sx={{
-        bgcolor: '#121212',
+        backgroundColor:
+        theme.palette.mode === "light" ? " rgb(248, 248, 248)" : null,
         p:"0 5px 10px 0",
         width: '100%',
         display: 'flex',
@@ -15,7 +17,8 @@ export default function SkeletonColor() {
       }}
     >
       <Skeleton
-        sx={{ bgcolor: 'grey.900' }}
+        sx={{   backgroundColor:
+          theme.palette.mode === "light" ? "#999" : "grey.900", }}
         variant="circular"
         width={150}
         height={150}

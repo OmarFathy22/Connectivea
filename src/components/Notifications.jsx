@@ -11,12 +11,11 @@ import { db } from "../../firebase/config";
 import { updateDoc } from "firebase/firestore";
 import ReplyIcon from '@mui/icons-material/Reply';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import Loading from './Loading';
 
 
 export default function FadeMenu() {
-  const {sub} = JSON.parse(localStorage.getItem("user"));
-  const [value, loading, error] = useDocument(doc(db,"AllUsers", sub));
+  const {sub} = JSON.parse(localStorage.getItem("user")) || {};
+  const [value, loading, error] = useDocument(doc(db,"AllUsers", sub || "100347238913223159278"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -27,6 +26,8 @@ export default function FadeMenu() {
   };
    if(error)console.log(error)
   //  if(loading)return <Loading/>
+  const Data = value?.data()?.notification;
+  Data?.reverse();
   return (
     <div style={{width:"100%"}}>
       <IconButton
@@ -59,7 +60,7 @@ export default function FadeMenu() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        {value?.data()?.notification?.length > 0 && value?.data()?.notification?.map((item , index) => {
+        {Data?.length > 0 && Data?.map((item , index) => {
           return(
             <MenuItem style={{display:"flex" , alignItems:"center"}}  key={index} onClick={handleClose}>
               <img style={{borderRadius:"50%" , marginRight:"5px"}} height={"30px"} width={"30px"} src={item?.picture} alt="image" />

@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import {useState} from 'React'
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,6 +18,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { Divider, styled, Switch } from "@mui/material";
 import {  useNavigate } from "react-router";
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import YouSure from './YouSure'
+
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
   height: 34,
@@ -72,6 +75,7 @@ function ResponsiveDrawer({
   handleDrawerToggle,
   mobileOpen,
 }) {
+  const [openYouSureForLogout, setopenYouSureForLogout] = useState(false);
   const navigate = useNavigate();
   // const location = useLocation();
   const { sub } = JSON.parse(localStorage.getItem("user"));
@@ -99,15 +103,13 @@ function ResponsiveDrawer({
           <label htmlFor ={item.text === 'Create' ? "FabIconClick": ""} key={index}>
               <ListItemButton
                 onClick={() => {
+                  handleDrawerToggle();
                   if (item.text === "Profile") {
                     navigate(`/profile/${sub}`);
                   } else if (item.text === "/") {
                     navigate("/");
                   } else if (item.text === "Logout") {
-                    localStorage.setItem("user", JSON.stringify({}));
-                    localStorage.setItem("CurrUser", JSON.stringify({}));
-                    localStorage.setItem("SignedIn" ,"true")
-                    window.location.reload();
+                    setopenYouSureForLogout(true)
                   }
                    else if (item.text === "Bookmarks") {
                     navigate('/bookmarks')
@@ -150,6 +152,11 @@ function ResponsiveDrawer({
         />
         {theme.palette.mode === "dark" ? "Dark" : "Light"}
       </List>
+      <YouSure dofunction={() => {
+                    localStorage.setItem("CurrUser", JSON.stringify({}));
+                    localStorage.setItem("SignedIn" ,"false")
+                    window.location.reload();
+                }} open={openYouSureForLogout} setOpen={setopenYouSureForLogout} text={"Are You sure you want to logout?"}/>
     </div>
   );
 

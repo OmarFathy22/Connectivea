@@ -199,10 +199,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
             <Typography component="div" sx={{ mt: 2 }}>
               <Stack direction="row" sx={{ alignItems: "center" }}>
                 <Avatar
-                  alt={
-                    JSON.parse(localStorage.getItem("user")).name.toString() ||
-                    "N"
-                  }
+                  alt= "logo"
                   src={JSON.parse(localStorage.getItem("user")).picture}
                 >
                   {JSON.parse(localStorage.getItem("user")).picture}
@@ -441,7 +438,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
         OPEN={openPostsnackbar}
         setOPEN={setopenPostsnackbar}
         Message="New Post Added Successfully"
-        time={5000}
+        time={3000}
         y={"top"}
         x={"center"}
       />

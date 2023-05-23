@@ -7,12 +7,15 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import Appbar from "../components/Appbar";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState , useEffect } from "react";
 import getDesignTokens from "../styles/MyTheme";
 import MainContent from "../components/MainContent";
 import DRAWER from "../components/DRAWER";
 // import RightDrawer from "../components/RightDrawer";
 const Root = (props) => {
+  useEffect(() => {
+  
+  }, []);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

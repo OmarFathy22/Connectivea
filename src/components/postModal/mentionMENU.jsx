@@ -2,71 +2,77 @@ import * as React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Avatar, Stack, Tooltip, Typography } from "@mui/material";
-
+import { useCollection } from "react-firebase-hooks/firestore";
+import { collection } from "firebase/firestore";
+import { db } from "../../../firebase/config";
 const ITEM_HEIGHT = 38;
-const mentions = [
-  {
-    IconLetter: "O",
-    Iconbgcolor: "#245953",
-    name: "Omar Fathy",
-    id: "1",
-  },
-  {
-    IconLetter: "A",
-    Iconbgcolor: "#FE6244",
-    name: "Ahmed Fathy",
-    id: "2",
-  },
-  {
-    IconLetter: "M",
-    Iconbgcolor: "#BBD6B8",
-    name: "Mohamed Fathy",
-    id: "3",
-  },
-  {
-    IconLetter: "S",
-    Iconbgcolor: "#FC2947",
-    name: "Sayed Fathy",
-    id: "4",
-  },
-  {
-    IconLetter: "M",
-    Iconbgcolor: "#9A208C",
-    name: "Mariem Fathy",
-    id: "5",
-  },
-  {
-    IconLetter: "S",
-    Iconbgcolor: "#B8621B",
-    name: "Sondos Fathy",
-    id: "6",
-  },
-  {
-    IconLetter: "M",
-    Iconbgcolor: "#555",
-    name: "Mina Fathy",
-    id: "7",
-  },
-  {
-    IconLetter: "F",
-    Iconbgcolor: "#FDF7C3",
-    name: "Fareeda Fathy",
-    id: "8",
-  },
-  {
-    IconLetter: "A",
-    Iconbgcolor: "#FFB4B4",
-    name: "Alaa Fathy",
-    id: "9",
-  },
-  {
-    IconLetter: "E",
-    Iconbgcolor: "#B2A4FF",
-    name: "Eyad Fathy",
-    id: "10",
-  },
-];
+// const mentions = [
+//   {
+//     IconLetter: "O",
+//     Iconbgcolor: "#245953",
+//     name: "Omar Fathy",
+//     id: "1",
+//   },
+//   {
+//     IconLetter: "A",
+//     Iconbgcolor: "#FE6244",
+//     name: "Ahmed Fathy",
+//     id: "2",
+//   },
+//   {
+//     IconLetter: "M",
+//     Iconbgcolor: "#BBD6B8",
+//     name: "Mohamed Fathy",
+//     id: "3",
+//   },
+//   {
+//     IconLetter: "S",
+//     Iconbgcolor: "#FC2947",
+//     name: "Sayed Fathy",
+//     id: "4",
+//   },
+//   {
+//     IconLetter: "M",
+//     Iconbgcolor: "#9A208C",
+//     name: "Mariem Fathy",
+//     id: "5",
+//   },
+//   {
+//     IconLetter: "S",
+//     Iconbgcolor: "#B8621B",
+//     name: "Sondos Fathy",
+//     id: "6",
+//   },
+//   {
+//     IconLetter: "M",
+//     Iconbgcolor: "#555",
+//     name: "Mina Fathy",
+//     id: "7",
+//   },
+//   {
+//     IconLetter: "F",
+//     Iconbgcolor: "#FDF7C3",
+//     name: "Fareeda Fathy",
+//     id: "8",
+//   },
+//   {
+//     IconLetter: "A",
+//     Iconbgcolor: "#FFB4B4",
+//     name: "Alaa Fathy",
+//     id: "9",
+//   },
+//   {
+//     IconLetter: "E",
+//     Iconbgcolor: "#B2A4FF",
+//     name: "Eyad Fathy",
+//     id: "10",
+//   },
+// ];
+
 export default function LongMenu({ theme, EmoJiIcon, PostText, setPostText }) {
+  const [value, loading, error] = useCollection(collection(db, "AllUsers"));
+  const AllUsers = value?.docs;
+  const filtered = AllUsers?.map((item) => item.data());
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -107,9 +113,9 @@ export default function LongMenu({ theme, EmoJiIcon, PostText, setPostText }) {
           },
         }}
       >
-        {mentions.map((option) => (
+        {filtered?.map((option) => (
           <MenuItem
-            key={option.id}
+            key={option.uid}
             onClick={(eo) => {
               handleClose();
               setPostText(PostText + " @" + option.name + " ");
@@ -118,13 +124,9 @@ export default function LongMenu({ theme, EmoJiIcon, PostText, setPostText }) {
             <Typography>
               <Stack direction="row" sx={{ alignItems: "center" }}>
                 <Avatar
-                  sx={{
-                    color: theme.palette.getContrastText(option.Iconbgcolor),
-                    bgcolor: option.Iconbgcolor,
-                  }}
-                  
+                  src={option?.picture}
                 >
-                  {option.IconLetter}
+                  
                 </Avatar>
                 <Typography
                   sx={{ ml: "15px", fontWeight: "100" }}

@@ -3,12 +3,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 const firebaseConfig = {
-  apiKey: "AIzaSyC5sxW7Kj-F2fW5vdg-bH-IFzcly4FBtJM",
-  authDomain: "postatiwith.firebaseapp.com",
-  projectId: "postatiwith",
-  storageBucket: "postatiwith.appspot.com",
-  messagingSenderId: "646245005567",
-  appId: "1:646245005567:web:e60790bf561b32b4f7b4ca"
+  apiKey: "AIzaSyBLtRZDf7lr6XWkEK0PZZvysnVSNolVqfE",
+  authDomain: "connectiveaa.firebaseapp.com",
+  projectId: "connectiveaa",
+  storageBucket: "connectiveaa.appspot.com",
+  messagingSenderId: "43856456231",
+  appId: "1:43856456231:web:82ca93b8cc35c5ab35fc02"
 };
 
 export const app = initializeApp(firebaseConfig);
