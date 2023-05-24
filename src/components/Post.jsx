@@ -286,7 +286,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        {uid === JSON.parse(localStorage.getItem("user")).sub && (
+        {uid ===sub && (
           <MenuItem
             sx={{ p: "5px 30px" }}
             onClick={() => {
@@ -406,7 +406,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
           shareDocument(post?.data()?.uId, post?.data()?.id, sub, ID, newData);
         }} open ={OpenShareModal} setOpen={setOpenShareModal} text={"Are You sure you want to share this Post?"}/>
         <Box sx={{ flexGrow: "1" }} />
-        {uid === JSON.parse(localStorage.getItem("user")).sub && (
+        {(uid === sub && location.pathname === `/profile/${sub}`) && (
           <IconButton
             sx={{
               "&:hover": {
@@ -427,7 +427,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
         <YouSureDelete dofunction={() => {
           deletePost(post?.id)
         }} open={OpenDeleteModal} setOpen={setOpenDeleteModal} text={"Are you sure you want to delete this Post?"}/>
-        {location.pathname === "/" && (
+        {(location.pathname === "/" || location.pathname === '/bookmarks') && (
           <Checkbox
             sx={{
               "&:hover": {
