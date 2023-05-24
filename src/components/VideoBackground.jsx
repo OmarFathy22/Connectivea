@@ -12,7 +12,7 @@ function VideoBackground({children}) {
         Your browser does not support HTML video.
       </video>
       <div style={{position:'absolute', width: "100%", height: "100%", display:"flex" , flexDirection:"column" , gap: '50px' , justifyContent:"center" , alignItems:"center"}}>
-          <h1>WELCOME TO CONNECTIVEA</h1>
+          <h1 style={{textAlign:"center"}}>WELCOME TO <span style={{color:"cyan"}}>CONNECTIVEA</span></h1>
         {children}
       </div>
     
