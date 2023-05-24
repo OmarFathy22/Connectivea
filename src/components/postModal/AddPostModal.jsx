@@ -18,7 +18,6 @@ import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import { doc, setDoc } from "firebase/firestore";
 import moment from "moment";
-import { useSnackbar } from "notistack";
 import SNACKBAR from "./Snackbar";
 import FeelingMENU from "./feelingMENU";
 import MentionMENU from "./mentionMENU";
@@ -93,11 +92,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
     handleClose();
     setImage(null);
   };
-  const { enqueueSnackbar } = useSnackbar();
-  const handleClickVariant = (message, variant) => () => {
-    // variant could be success, error, warning, info, or default
-    enqueueSnackbar(message, { variant });
-  };
+
 
   useEffect(() => {
     listAll(ref(storage, "images")).then((res) => {
@@ -134,7 +129,6 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
       setUPLOAD(null);
       setUPLOADMEDIA(false);
       setOPEN(true);
-      handleClickVariant("Your video uploaded successfully", "success");
       getDownloadURL(res.ref).then((url) => {
         setvideoUrl((prev) => [...prev, url]);
       });
@@ -430,7 +424,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
         OPEN={OPEN}
         setOPEN={setOPEN}
         Message={"Media Uploaded Successfully!"}
-        time={3500}
+        time={1000}
         y={"top"}
         x={"center"}
       />
@@ -438,7 +432,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
         OPEN={openPostsnackbar}
         setOPEN={setopenPostsnackbar}
         Message="New Post Added Successfully"
-        time={3000}
+        time={1000}
         y={"top"}
         x={"center"}
       />

@@ -29,15 +29,15 @@ import { updateDoc } from "firebase/firestore";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { getDoc, setDoc } from "firebase/firestore";
 import YouSure from './YouSure'
-import YouSureDelete from './YouSure'
-
+import ShareSnack from './postModal/Snackbar'
 
 function Post({ theme, deletePost, post, uid, ID }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [OpenShareModal, setOpenShareModal] = useState(false);
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
+  const [shareSnackbar, setshareSnackbar] = useState(false);
+  const [deleteSnackbar, setdeleteSnackbar] = useState(false);
   const open = Boolean(anchorEl);
-
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -139,6 +139,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
       // Create a new document in the target collection with the updated data
       const targetDocRef = doc(db, targetCollection, targetDocId);
       await setDoc(targetDocRef, updatedDocData);
+      setshareSnackbar(true)
     } catch (error) {
       console.log(error);
     }
@@ -405,6 +406,14 @@ function Post({ theme, deletePost, post, uid, ID }) {
           );
           shareDocument(post?.data()?.uId, post?.data()?.id, sub, ID, newData);
         }} open ={OpenShareModal} setOpen={setOpenShareModal} text={"Are You sure you want to share this Post?"}/>
+        <ShareSnack
+        OPEN={shareSnackbar}
+        setOPEN={setshareSnackbar}
+        Message={"Post Shared Successfully!"}
+        time={1000}
+        y={"top"}
+        x={"center"}
+      />
         <Box sx={{ flexGrow: "1" }} />
         {(uid === sub && location.pathname === `/profile/${sub}`) && (
           <IconButton
@@ -424,9 +433,18 @@ function Post({ theme, deletePost, post, uid, ID }) {
           </IconButton>
           
         )}
-        <YouSureDelete dofunction={() => {
+        <YouSure dofunction={() => {
           deletePost(post?.id)
+          setdeleteSnackbar(true)
         }} open={OpenDeleteModal} setOpen={setOpenDeleteModal} text={"Are you sure you want to delete this Post?"}/>
+          <ShareSnack
+        OPEN={deleteSnackbar}
+        setOPEN={setdeleteSnackbar}
+        Message={"Post deleted Successfully!"}
+        time={1000}
+        y={"top"}
+        x={"center"}
+      />
         {(location.pathname === "/" || location.pathname === '/bookmarks') && (
           <Checkbox
             sx={{
