@@ -31,8 +31,13 @@ const Root = (props) => {
   useEffect(() => {
     const handleGoogleApiLoad = () => {
       const signedIn = localStorage.getItem("SignedIn");
+      const CurrMode =   localStorage.getItem("currentMode");
       if (signedIn !== "true") {
         localStorage.setItem("SignedIn", "false");
+      }
+      if(CurrMode === null)
+      {
+        localStorage.setItem("currentMode", "dark");
       }
       google.accounts.id.initialize({
         client_id:

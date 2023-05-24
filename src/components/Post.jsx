@@ -163,10 +163,10 @@ function Post({ theme, deletePost, post, uid, ID }) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            gap: "10px",
+            gap: "5px",
           }}
         >
-          <ReplyIcon /> Reposted
+          <ReplyIcon style={{fontSize:"12px"}}/> <span style={{fontSize:"12px"}}>Reposted</span>
         </Box>
       )}
       <CardHeader
