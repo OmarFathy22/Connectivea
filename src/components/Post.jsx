@@ -148,7 +148,8 @@ function Post({ theme, deletePost, post, uid, ID }) {
     <Card
       key={post.date}
       sx={{
-        maxWidth: 850,
+        maxWidth:post?.data()?.media === null ? "400px" : "fit-content" ,
+        maxHeight:post?.data()?.media === null ? "600px" : "fit-content" ,
         mr: "auto",
         ml: "auto",
         mb: "90px",
@@ -307,7 +308,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
           dir="auto"
           component="span"
           variant="body2"
-          color="text.secondary"
+          color="white"
         >
           {post?.data()?.body}
         </Typography>
@@ -318,7 +319,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
           max-height="300"
           image={post?.data()?.media}
           alt="Paella dish"
-          style={{maxHeight:"400px"}}
+          style={{maxHeight:"400px" , objectFit:"contain" , backgroundColor:"transparent !important"}}
           
         />
       )}

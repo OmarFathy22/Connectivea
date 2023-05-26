@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { useCollection } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
 import { db } from "../../../firebase/config";
@@ -6,7 +8,6 @@ import * as React from "react";
 import MenuList from "@mui/material/MenuList";
 import Paper from "@mui/material/Paper";
 import Loading from '../Loading'
-// eslint-disable-next-line react/prop-types
 const SearchResults = ({ Search }) => {
   const navigate = useNavigate();
   const [value, loading, error] = useCollection(collection(db, "AllUsers"));

@@ -15,7 +15,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function FadeMenu() {
   const {sub} = JSON.parse(localStorage.getItem("user")) || {};
-  const [value, loading, error] = useDocument(doc(db,"AllUsers", sub || "100347238913223159278"));
+  const [value, error] = useDocument(doc(db,"AllUsers", sub || "100347238913223159278"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -46,7 +46,7 @@ export default function FadeMenu() {
                 });
               }}
             >
-              <Badge badgeContent={value?.data()?.Length} color="error">
+              <Badge badgeContent={3} color="error">
                   <NotificationsIcon />
               </Badge>
             </IconButton>

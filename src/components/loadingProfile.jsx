@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';

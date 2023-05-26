@@ -155,7 +155,7 @@ export default function TransitionsModal({ theme, ID, FEELING, setFEELING }) {
           id="FabIconClick"
           onClick={handleOpen}
           sx={{
-            display: 'none',
+            // display: 'none',
             position: "fixed",
             bottom: "30px",
             left: { xs: "30px" },
