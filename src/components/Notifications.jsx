@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,7 +16,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function FadeMenu() {
   const {sub} = JSON.parse(localStorage.getItem("user")) || {};
-  const [value, error] = useDocument(doc(db,"AllUsers", sub || "100347238913223159278"));
+  const [value, loading, error] = useDocument(doc(db,"AllUsers", sub || "100347238913223159278"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -46,7 +47,7 @@ export default function FadeMenu() {
                 });
               }}
             >
-              <Badge badgeContent={3} color="error">
+              <Badge badgeContent={value?.data()?.Length} color="error">
                   <NotificationsIcon />
               </Badge>
             </IconButton>
