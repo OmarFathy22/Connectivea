@@ -38,7 +38,7 @@ export default function BasicModal({dofunction , open , setOpen , text}) {
               handleClose()
             }, 500);
            }}>YES</Button>
-           <Button variant='contained'onClick={handleClose}>NO</Button>
+           <Button variant='contained'onClick={handleClose} style={{backgroundColor:"#888"}}>NO</Button>
           </Box>
           </Box>
         
