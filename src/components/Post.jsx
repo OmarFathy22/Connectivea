@@ -148,8 +148,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
     <Card
       key={post.date}
       sx={{
-        maxWidth:post?.data()?.media === null ? "400px" : "fit-content" ,
-        maxHeight:post?.data()?.media === null ? "600px" : "fit-content" ,
+        maxWidth:"750px",
         mr: "auto",
         ml: "auto",
         mb: "90px",
