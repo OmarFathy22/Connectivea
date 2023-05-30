@@ -100,7 +100,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
     }
     let Length = 0;
     if(id !== sub) {
-      Length = Data?.Length
+      Length = docSnap?.data()?.Length + 1
     }
     if (docSnap.exists()) {
       await updateDoc(doc(db, "AllUsers", id), {
