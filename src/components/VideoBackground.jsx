@@ -4,10 +4,10 @@ import Video from '../Video/video.mp4'
 function VideoBackground({children}) {
   return (
     <div>
-      <video width="300"
+      <video  width="300"
               height="300"
                autoPlay muted loop id="myVideo" src={Video}
-               style={{ opacity:"0.5", position: "fixed", width: "100%", height: "100%", objectFit: "cover", zIndex: "-1" }}
+               style={{ opacity:"0.5", position: "fixed", width: "100%", height: "100%", objectFit: "fill", zIndex: "-1" }}
                >
         Your browser does not support HTML video.
       </video>
