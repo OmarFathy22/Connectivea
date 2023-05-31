@@ -29,15 +29,15 @@ import { updateDoc } from "firebase/firestore";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { getDoc, setDoc } from "firebase/firestore";
 import YouSure from './YouSure'
-import YouSureDelete from './YouSure'
-
+import ShareSnack from './postModal/Snackbar'
 
 function Post({ theme, deletePost, post, uid, ID }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [OpenShareModal, setOpenShareModal] = useState(false);
   const [OpenDeleteModal, setOpenDeleteModal] = useState(false);
+  const [shareSnackbar, setshareSnackbar] = useState(false);
+  const [deleteSnackbar, setdeleteSnackbar] = useState(false);
   const open = Boolean(anchorEl);
-
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -100,7 +100,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
     }
     let Length = 0;
     if(id !== sub) {
-      Length = Data?.Length
+      Length = docSnap?.data()?.Length + 1
     }
     if (docSnap.exists()) {
       await updateDoc(doc(db, "AllUsers", id), {
@@ -139,6 +139,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
       // Create a new document in the target collection with the updated data
       const targetDocRef = doc(db, targetCollection, targetDocId);
       await setDoc(targetDocRef, updatedDocData);
+      setshareSnackbar(true)
     } catch (error) {
       console.log(error);
     }
@@ -147,7 +148,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
     <Card
       key={post.date}
       sx={{
-        maxWidth: 850,
+        maxWidth:"750px",
         mr: "auto",
         ml: "auto",
         mb: "90px",
@@ -163,10 +164,10 @@ function Post({ theme, deletePost, post, uid, ID }) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            gap: "10px",
+            gap: "5px",
           }}
         >
-          <ReplyIcon /> Reposted
+          <ReplyIcon style={{fontSize:"12px"}}/> <span style={{fontSize:"12px"}}>Reposted</span>
         </Box>
       )}
       <CardHeader
@@ -286,7 +287,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        {uid === JSON.parse(localStorage.getItem("user")).sub && (
+        {uid ===sub && (
           <MenuItem
             sx={{ p: "5px 30px" }}
             onClick={() => {
@@ -306,7 +307,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
           dir="auto"
           component="span"
           variant="body2"
-          color="text.secondary"
+          color="white"
         >
           {post?.data()?.body}
         </Typography>
@@ -317,7 +318,7 @@ function Post({ theme, deletePost, post, uid, ID }) {
           max-height="300"
           image={post?.data()?.media}
           alt="Paella dish"
-          style={{maxHeight:"400px"}}
+          style={{maxHeight:"400px" , objectFit:"contain" , backgroundColor:"transparent !important"}}
           
         />
       )}
@@ -405,8 +406,16 @@ function Post({ theme, deletePost, post, uid, ID }) {
           );
           shareDocument(post?.data()?.uId, post?.data()?.id, sub, ID, newData);
         }} open ={OpenShareModal} setOpen={setOpenShareModal} text={"Are You sure you want to share this Post?"}/>
+        <ShareSnack
+        OPEN={shareSnackbar}
+        setOPEN={setshareSnackbar}
+        Message={"Post Shared Successfully!"}
+        time={1000}
+        y={"top"}
+        x={"center"}
+      />
         <Box sx={{ flexGrow: "1" }} />
-        {uid === JSON.parse(localStorage.getItem("user")).sub && (
+        {(uid === sub && location.pathname === `/profile/${sub}`) && (
           <IconButton
             sx={{
               "&:hover": {
@@ -424,10 +433,19 @@ function Post({ theme, deletePost, post, uid, ID }) {
           </IconButton>
           
         )}
-        <YouSureDelete dofunction={() => {
+        <YouSure dofunction={() => {
           deletePost(post?.id)
+          setdeleteSnackbar(true)
         }} open={OpenDeleteModal} setOpen={setOpenDeleteModal} text={"Are you sure you want to delete this Post?"}/>
-        {location.pathname === "/" && (
+          <ShareSnack
+        OPEN={deleteSnackbar}
+        setOPEN={setdeleteSnackbar}
+        Message={"Post deleted Successfully!"}
+        time={1000}
+        y={"top"}
+        x={"center"}
+      />
+        {(location.pathname === "/" || location.pathname === '/bookmarks') && (
           <Checkbox
             sx={{
               "&:hover": {

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import {useState} from 'React'
+import {useState} from 'react'
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,9 +10,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
-import Logo from '../c5.png'
+import Logo from '../assets/c5.png'
 import HomeIcon from "@mui/icons-material/Home";
-import Create from "@mui/icons-material/Create";
+// import Create from "@mui/icons-material/Create";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Divider, styled, Switch } from "@mui/material";
@@ -83,7 +83,7 @@ function ResponsiveDrawer({
   const list = [
     { text: "/", icon: <HomeIcon /> },
     { text: "Profile", icon: <PersonIcon /> },
-    { text: "Create", icon: <Create /> },
+    // { text: "Create", icon: <Create /> },
     { text: "Bookmarks", icon: <BookmarksIcon /> },
     { text: "Logout", icon: <LogoutIcon />, path: "/logout" },
   ];

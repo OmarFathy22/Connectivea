@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -37,7 +38,7 @@ export default function BasicModal({dofunction , open , setOpen , text}) {
               handleClose()
             }, 500);
            }}>YES</Button>
-           <Button variant='contained'onClick={handleClose}>NO</Button>
+           <Button variant='contained'onClick={handleClose} style={{backgroundColor:"#888"}}>NO</Button>
           </Box>
           </Box>
         

@@ -4,12 +4,10 @@ import  { useMemo, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import getDesignTokens from "./styles/MyTheme";
 import { useEffect } from "react";
-// import Appbar from "./components/Appbar";
 import jwtDecode from "jwt-decode";
 import VideoBackground from "./components/VideoBackground";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
-// import Home from './pages/Home'
 import ScrollToTop from "./components/ScrollToTop";
 import { getDoc } from "firebase/firestore";
 
@@ -20,7 +18,7 @@ const Root = (props) => {
     JSON.parse(localStorage.getItem("user")) || {}
   );
    
-  const SignedIn = localStorage.getItem("SignedIn");
+  const SignedIn = localStorage.getItem("SignedIn") || "false";
   useEffect(() => {
       if (SignedIn == "true") {
          if(Object.keys(user).length === 0)
@@ -32,9 +30,18 @@ const Root = (props) => {
   }, [user, navigate, SignedIn]);
   useEffect(() => {
     const handleGoogleApiLoad = () => {
+      const signedIn = localStorage.getItem("SignedIn");
+      const CurrMode =   localStorage.getItem("currentMode");
+      if (signedIn !== "true") {
+        localStorage.setItem("SignedIn", "false");
+      }
+      if(CurrMode === null)
+      {
+        localStorage.setItem("currentMode", "dark");
+      }
       google.accounts.id.initialize({
         client_id:
-          "646245005567-1a33npebn0q9i0sbdnanqqotpr216gjc.apps.googleusercontent.com",
+          "646245005567-l4hf2eq6k8rmkleau7lsqh12i3aglnou.apps.googleusercontent.com",
         callback: handleCallbackResponse,
       });
       google.accounts.id.renderButton(document.getElementById("signInDiv"), {

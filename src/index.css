@@ -4,6 +4,11 @@
   box-sizing: border-box;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
 html {
   scroll-behavior: smooth;
 }
