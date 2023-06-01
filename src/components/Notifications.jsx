@@ -47,7 +47,7 @@ export default function FadeMenu() {
                 });
               }}
             >
-              <Badge badgeContent={value?.data()?.Length} color="error">
+              <Badge badgeContent={isNaN(value?.data()?.Length)? 0 : value?.data()?.Length} color="error">
                   <NotificationsIcon />
               </Badge>
             </IconButton>
