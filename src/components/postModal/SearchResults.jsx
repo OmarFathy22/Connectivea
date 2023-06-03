@@ -91,8 +91,8 @@ const SearchResults = ({ Search }) => {
         </div>
       )}
       {filtered?.length > 0 && !isLoading && (
-        <Paper>
-          <MenuList>
+        <Paper style={{maxHeight:"200px" , overflow:"auto"}}>
+          <MenuList >
             {filtered?.map((item, index) => {
               return (
                 <div
