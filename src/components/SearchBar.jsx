@@ -53,9 +53,9 @@ const SearchBar = ({theme}) => {
 
   const handleSearch = (e) => {
     setfilterAccounts(e.target.value)
+    setOpenSearchMenu(true)
   }
   const handleFocus = () =>{
-      setOpenSearchMenu(true)
   }
   const handleBlur = () => {
     setTimeout(() => {
